@@ -17,8 +17,7 @@ class Pokemon {
 
     hasFainted() {
         if(this.hitPoints === 0) return true;
-        return false;
-        
+        return false; 
     }
 };
 
@@ -26,23 +25,63 @@ class FirePokemon extends Pokemon {
     constructor(name, hitPoints, attackDamage, move) {
         super(name, hitPoints, attackDamage, move = 'tackle');
     };
+
+    isEffectiveAgainst(pokemon) {
+        if (pokemon instanceof GrassPokemon) return true;
+        return false;
+    };
+
+    isWeakTo(pokemon) {
+        if (pokemon instanceof WaterPokemon) return true;
+        return false;
+    };
+
 };
 
 class WaterPokemon extends Pokemon {
     constructor(name, hitPoints, attackDamage, move) {
         super(name, hitPoints, attackDamage, move = 'tackle');
     };
+
+    isEffectiveAgainst(pokemon) {
+        if (pokemon instanceof FirePokemon) return true
+        return false;
+    };
+
+    isWeakTo(pokemon) {
+        if (pokemon instanceof GrassPokemon) return true;
+        return false;
+    };
+
 };
 
 class GrassPokemon extends Pokemon {
     constructor(name, hitPoints, attackDamage, move) {
         super(name, hitPoints, attackDamage, move = 'tackle');
     };
+
+    isEffectiveAgainst(pokemon) {
+        if (pokemon instanceof WaterPokemon) return true
+        return false;
+    };
+
+    isWeakTo(pokemon) {
+        if (pokemon instanceof FirePokemon) return true;
+        return false;
+    };
+
 };
 
 class NormalPokemon extends Pokemon {
     constructor(name, hitPoints, attackDamage, move) {
         super(name, hitPoints, attackDamage, move = 'tackle');
+    };
+    isEffectiveAgainst(pokemon) {
+        return false;
+    };
+
+    isWeakTo(pokemon) {
+        return false;
     };
 };
 

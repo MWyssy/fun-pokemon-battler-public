@@ -101,7 +101,7 @@ describe('pokemonBattler Tests', () => {
             }); 
         });
     });
-    describe.only('Fire constructor', () => {
+    describe('Fire constructor', () => {
         describe('Fire constructor Properties', () => {
             test('', () => {
                 //Arrange
@@ -118,8 +118,8 @@ describe('pokemonBattler Tests', () => {
                 expect().toBe();
             });
         });
-        describe.skip('Fire constructor Methods', () => {
-            test('', () => {
+        describe('Fire constructor Methods', () => {
+            test('should have a isEffectiveAgainst method that returns boolean value', () => {
                 //Arrange
                 const name = 'Charmander'
                 const hitPoints = 100;
@@ -127,11 +127,47 @@ describe('pokemonBattler Tests', () => {
                 const move = 'ember'
                 const charmander = new FirePokemon(name, hitPoints, attackDamage, move); 
                 //Assert
-                
-                //Act
-                
+                expect(typeof charmander.isEffectiveAgainst()).toBe('boolean');
+            });
+            test('the isEffective method should return true if a grass pokemon is passed in, and false otherwise', () => {
+                //Arrange
+                const name = 'Charmander'
+                const hitPoints = 100;
+                const attackDamage = 40;
+                const move = 'ember'
+                const charmander = new FirePokemon(name, hitPoints, attackDamage, move);
+                const grassPokemon = new GrassPokemon("Bulbasaur", 90, 45, 'vine whip');
+                const waterPokemon = new WaterPokemon("Squirtle", 110, 35, 'water gun');
+                const normalPokemon = new NormalPokemon("Rattatta", 30, 5, 'scratch');
                 //Assert
-                expect().toBe();
+                expect(charmander.isEffectiveAgainst(grassPokemon)).toBe(true);
+                expect(charmander.isEffectiveAgainst(waterPokemon)).toBe(false);
+                expect(charmander.isEffectiveAgainst(normalPokemon)).toBe(false);
+            });
+            test('should have a isWeakTo method that returns boolean value', () => {
+                //Arrange
+                const name = 'Charmander'
+                const hitPoints = 100;
+                const attackDamage = 40;
+                const move = 'ember'
+                const charmander = new FirePokemon(name, hitPoints, attackDamage, move); 
+                //Assert
+                expect(typeof charmander.isWeakTo()).toBe('boolean');
+            });
+            test('the isWeakTo method should return true if a water pokemon is passed in, and false otherwise', () => {
+                //Arrange
+                const name = 'Charmander'
+                const hitPoints = 100;
+                const attackDamage = 40;
+                const move = 'ember'
+                const charmander = new FirePokemon(name, hitPoints, attackDamage, move);
+                const grassPokemon = new GrassPokemon("Bulbasaur", 90, 45, 'vine whip');
+                const waterPokemon = new WaterPokemon("Squirtle", 110, 35, 'water gun');
+                const normalPokemon = new NormalPokemon("Rattatta", 30, 5, 'scratch');
+                //Assert
+                expect(charmander.isWeakTo(grassPokemon)).toBe(false);
+                expect(charmander.isWeakTo(waterPokemon)).toBe(true);
+                expect(charmander.isWeakTo(normalPokemon)).toBe(false);
             });
         });   
     });
@@ -153,7 +189,7 @@ describe('pokemonBattler Tests', () => {
             });
         });
         describe('Water constructor Methods', () => {
-            test('', () => {
+            test('should have a isEffectiveAgainst method that returns boolean value', () => {
                 //Arrange
                 const name = 'Squirtle'
                 const hitPoints = 110;
@@ -161,11 +197,47 @@ describe('pokemonBattler Tests', () => {
                 const move = 'water gun'
                 const squirtle = new WaterPokemon(name, hitPoints, attackDamage, move); 
                 //Assert
-                
-                //Act
-                
+                expect(typeof squirtle.isEffectiveAgainst()).toBe('boolean');
+            });
+            test('the isEffective method should return true if a fire pokemon is passed in, and false otherwise', () => {
+                //Arrange
+                const name = 'Squirtle'
+                const hitPoints = 110;
+                const attackDamage = 35;
+                const move = 'water gun'
+                const squirtle = new WaterPokemon(name, hitPoints, attackDamage, move); 
+                const grassPokemon = new GrassPokemon("Bulbasaur", 90, 45, 'vine whip');
+                const firePokemon = new FirePokemon("Charmander", 100, 50, 'ember');
+                const normalPokemon = new NormalPokemon("Rattatta", 30, 5, 'scratch');
                 //Assert
-                expect().toBe();
+                expect(squirtle.isEffectiveAgainst(grassPokemon)).toBe(false);
+                expect(squirtle.isEffectiveAgainst(firePokemon)).toBe(true);
+                expect(squirtle.isEffectiveAgainst(normalPokemon)).toBe(false);
+            });
+            test('should have an isWeakTo method that returns boolean value', () => {
+                //Arrange
+                const name = 'Squirtle'
+                const hitPoints = 110;
+                const attackDamage = 35;
+                const move = 'water gun'
+                const squirtle = new WaterPokemon(name, hitPoints, attackDamage, move); 
+                //Assert
+                expect(typeof squirtle.isWeakTo()).toBe('boolean');
+            });
+            test('the isWeakTo method should return true if a grass pokemon is passed in, and false otherwise', () => {
+                //Arrange
+                const name = 'Squirtle'
+                const hitPoints = 110;
+                const attackDamage = 35;
+                const move = 'water gun'
+                const squirtle = new WaterPokemon(name, hitPoints, attackDamage, move); 
+                const grassPokemon = new GrassPokemon("Bulbasaur", 90, 45, 'vine whip');
+                const firePokemon = new FirePokemon("Charmander", 100, 50, 'ember');
+                const normalPokemon = new NormalPokemon("Rattatta", 30, 5, 'scratch');
+                //Assert
+                expect(squirtle.isWeakTo(grassPokemon)).toBe(true);
+                expect(squirtle.isWeakTo(firePokemon)).toBe(false);
+                expect(squirtle.isWeakTo(normalPokemon)).toBe(false);
             });
         });
     });
@@ -187,7 +259,7 @@ describe('pokemonBattler Tests', () => {
             });
         });
         describe('Grass constructor Methods', () => {
-            test('', () => {
+            test('should have a isEffectiveAgainst method that returns boolean value', () => {
                 //Arrange
                 const name = 'Bulbasaur'
                 const hitPoints = 90;
@@ -195,11 +267,47 @@ describe('pokemonBattler Tests', () => {
                 const move = 'vine whip'
                 const bulbasaur = new GrassPokemon(name, hitPoints, attackDamage, move); 
                 //Assert
-                
-                //Act
-                
+                expect(typeof bulbasaur.isEffectiveAgainst()).toBe('boolean');
+            });
+            test('the isEffective method should return true if a water pokemon is passed in, and false otherwise', () => {
+                //Arrange
+                const name = 'Bulbasaur'
+                const hitPoints = 90;
+                const attackDamage = 45;
+                const move = 'vine whip'
+                const bulbasaur = new GrassPokemon(name, hitPoints, attackDamage, move); 
+                const firePokemon = new FirePokemon("Charmander", 100, 50, 'ember');
+                const waterPokemon = new WaterPokemon("Squirtle", 110, 35, 'water gun');
+                const normalPokemon = new NormalPokemon("Rattatta", 30, 5, 'scratch');
                 //Assert
-                expect().toBe();
+                expect(bulbasaur.isEffectiveAgainst(firePokemon)).toBe(false);
+                expect(bulbasaur.isEffectiveAgainst(waterPokemon)).toBe(true);
+                expect(bulbasaur.isEffectiveAgainst(normalPokemon)).toBe(false);
+            });
+            test('should have a isWeakTo method that returns boolean value', () => {
+                //Arrange
+                const name = 'Bulbasaur'
+                const hitPoints = 90;
+                const attackDamage = 45;
+                const move = 'vine whip'
+                const bulbasaur = new GrassPokemon(name, hitPoints, attackDamage, move); 
+                //Assert
+                expect(typeof bulbasaur.isWeakTo()).toBe('boolean');
+            });
+            test('the isWeakTo method should return true if a fire pokemon is passed in, and false otherwise', () => {
+                //Arrange
+                const name = 'Bulbasaur'
+                const hitPoints = 90;
+                const attackDamage = 45;
+                const move = 'vine whip'
+                const bulbasaur = new GrassPokemon(name, hitPoints, attackDamage, move); 
+                const firePokemon = new FirePokemon("Charmander", 100, 50, 'ember');
+                const waterPokemon = new WaterPokemon("Squirtle", 110, 35, 'water gun');
+                const normalPokemon = new NormalPokemon("Rattatta", 30, 5, 'scratch');
+                //Assert
+                expect(bulbasaur.isWeakTo(firePokemon)).toBe(true);
+                expect(bulbasaur.isWeakTo(waterPokemon)).toBe(false);
+                expect(bulbasaur.isWeakTo(normalPokemon)).toBe(false);
             });
         });
     });
@@ -221,7 +329,7 @@ describe('pokemonBattler Tests', () => {
             });
         });
         describe('Normal constructor Methods', () => {
-            test('', () => {
+            test('should have a isEffectiveAgainst method that returns boolean value', () => {
                 //Arrange
                 const name = 'Rattatta'
                 const hitPoints = 30;
@@ -229,11 +337,47 @@ describe('pokemonBattler Tests', () => {
                 const move = 'scratch'
                 const rattatta = new NormalPokemon(name, hitPoints, attackDamage, move); 
                 //Assert
-                
-                //Act
-                
+                expect(typeof rattatta.isEffectiveAgainst()).toBe('boolean');
+            });
+            test('the isEffective method should return false', () => {
+                //Arrange
+                const name = 'Rattatta'
+                const hitPoints = 30;
+                const attackDamage = 10;
+                const move = 'scratch'
+                const rattatta = new NormalPokemon(name, hitPoints, attackDamage, move); 
+                const grassPokemon = new GrassPokemon("Bulbasaur", 90, 45, 'vine whip');
+                const waterPokemon = new WaterPokemon("Squirtle", 110, 35, 'water gun');
+                const firePokemon = new FirePokemon("Charmander", 100, 50, 'ember');
                 //Assert
-                expect().toBe();
+                expect(rattatta.isEffectiveAgainst(grassPokemon)).toBe(false);
+                expect(rattatta.isEffectiveAgainst(waterPokemon)).toBe(false);
+                expect(rattatta.isEffectiveAgainst(firePokemon)).toBe(false);
+            });
+            test('should have a isWeakTo method that returns boolean value', () => {
+                //Arrange
+                const name = 'Rattatta'
+                const hitPoints = 30;
+                const attackDamage = 10;
+                const move = 'scratch'
+                const rattatta = new NormalPokemon(name, hitPoints, attackDamage, move); 
+                //Assert
+                expect(typeof rattatta.isWeakTo()).toBe('boolean');
+            });
+            test('the isWeakTo method should return false', () => {
+                //Arrange
+                const name = 'Rattatta'
+                const hitPoints = 30;
+                const attackDamage = 10;
+                const move = 'scratch'
+                const rattatta = new NormalPokemon(name, hitPoints, attackDamage, move); 
+                const grassPokemon = new GrassPokemon("Bulbasaur", 90, 45, 'vine whip');
+                const waterPokemon = new WaterPokemon("Squirtle", 110, 35, 'water gun');
+                const firePokemon = new FirePokemon("Charmander", 100, 50, 'ember');
+                //Assert
+                expect(rattatta.isWeakTo(grassPokemon)).toBe(false);
+                expect(rattatta.isWeakTo(waterPokemon)).toBe(false);
+                expect(rattatta.isWeakTo(firePokemon)).toBe(false);
             });
         });
     });
