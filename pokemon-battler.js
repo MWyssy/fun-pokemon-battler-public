@@ -89,22 +89,25 @@ class Charmander extends FirePokemon {
     constructor(name, hitPoints, attackDamage, move) {
         super(name, hitPoints, attackDamage, "ember")
     }
-}
+};
+
 class Squirtle extends WaterPokemon {
     constructor(name, hitPoints, attackDamage, move) {
         super(name, hitPoints, attackDamage, "water gun")
     }
-}
+};
+
 class Bulbasaur extends GrassPokemon {
     constructor(name, hitPoints, attackDamage, move) {
         super(name, hitPoints, attackDamage, "vine whip")
     }
-}
+};
+
 class Rattatta extends NormalPokemon {
     constructor(name, hitPoints, attackDamage, move) {
         super(name, hitPoints, attackDamage, move)
     }
-}
+};
 
 
 module.exports = {

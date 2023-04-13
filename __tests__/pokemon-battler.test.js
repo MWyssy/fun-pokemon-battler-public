@@ -106,22 +106,6 @@ describe('pokemonBattler Tests', () => {
         });
     });
     describe('Fire constructor', () => {
-        describe('Fire constructor Properties', () => {
-            test('', () => {
-                //Arrange
-                const name = 'Charmander'
-                const hitPoints = 100;
-                const attackDamage = 40;
-                const move = 'ember'
-                const charmander = new FirePokemon(name, hitPoints, attackDamage, move); 
-                //Assert
-                
-                //Act
-                
-                //Assert
-                expect().toBe();
-            });
-        });
         describe('Fire constructor Methods', () => {
             test('should have a isEffectiveAgainst method that returns boolean value', () => {
                 //Arrange
@@ -176,22 +160,6 @@ describe('pokemonBattler Tests', () => {
         });   
     });
     describe('Water constructor', () => {
-        describe('Water constructor Properties', () => {
-            test('', () => {
-                //Arrange
-                const name = 'Squirtle'
-                const hitPoints = 110;
-                const attackDamage = 35;
-                const move = 'water gun'
-                const squirtle = new WaterPokemon(name, hitPoints, attackDamage, move); 
-                //Assert
-                
-                //Act
-                
-                //Assert
-                expect().toBe();
-            });
-        });
         describe('Water constructor Methods', () => {
             test('should have a isEffectiveAgainst method that returns boolean value', () => {
                 //Arrange
@@ -246,22 +214,6 @@ describe('pokemonBattler Tests', () => {
         });
     });
     describe('Grass constructor', () => {
-        describe('Grass constructor Properties', () => {
-            test('', () => {
-                //Arrange
-                const name = 'Bulbasaur'
-                const hitPoints = 90;
-                const attackDamage = 45;
-                const move = 'vine whip'
-                const bulbasaur = new GrassPokemon(name, hitPoints, attackDamage, move); 
-                //Assert
-                
-                //Act
-                
-                //Assert
-                expect().toBe();
-            });
-        });
         describe('Grass constructor Methods', () => {
             test('should have a isEffectiveAgainst method that returns boolean value', () => {
                 //Arrange
@@ -316,22 +268,6 @@ describe('pokemonBattler Tests', () => {
         });
     });
     describe('Normal constructor', () => {
-        describe('Normal constructor Properties', () => {
-            test('', () => {
-                //Arrange
-                const name = 'Rattatta'
-                const hitPoints = 30;
-                const attackDamage = 10;
-                const move = 'scratch'
-                const rattatta = new NormalPokemon(name, hitPoints, attackDamage, move); 
-                //Assert
-                
-                //Act
-                
-                //Assert
-                expect().toBe();
-            });
-        });
         describe('Normal constructor Methods', () => {
             test('should have a isEffectiveAgainst method that returns boolean value', () => {
                 //Arrange
@@ -385,7 +321,6 @@ describe('pokemonBattler Tests', () => {
             });
         });
     });
-
     describe('Pokemon species constructors', () => {
         describe('Charmander constructor Properties', () => {
             test('should be an instance of fire pokemon', () => {
@@ -406,58 +341,57 @@ describe('pokemonBattler Tests', () => {
                 //Assert
                 expect(charmander.move).toBe("ember");
             });
-
-            describe('Squirtle constructor Properties', () => {
-                test('should be an instance of water pokemon', () => {
-                    //Arrange
-                    const name = 'Squirtle'
-                    const hitPoints = 100;
-                    const attackDamage = 40;
-                    const squirtle = new Squirtle(name, hitPoints, attackDamage); 
-                    //Assert
-                    expect(squirtle instanceof WaterPokemon).toBe(true);
+        });
+        describe('Squirtle constructor Properties', () => {
+            test('should be an instance of water pokemon', () => {
+                //Arrange
+                const name = 'Squirtle'
+                const hitPoints = 100;
+                const attackDamage = 40;
+                const squirtle = new Squirtle(name, hitPoints, attackDamage); 
+                //Assert
+                expect(squirtle instanceof WaterPokemon).toBe(true);
                 });
-                test('should have it move set to water gun ', () => {
-                    //Arrange
-                    const name = 'Squirtle'
-                    const hitPoints = 100;
-                    const attackDamage = 40;
-                    const squirtle = new Squirtle(name, hitPoints, attackDamage); 
-                    //Assert
-                    expect(squirtle.move).toBe("water gun");
-                });
-                describe('Bulbasaur constructor Properties', () => {
-                    test('should be an instance of grass pokemon', () => {
-                        //Arrange
-                        const name = 'Bulbasaur'
-                        const hitPoints = 100;
-                        const attackDamage = 40;
-                        const bulbasaur = new Bulbasaur(name, hitPoints, attackDamage); 
-                        //Assert
-                        expect(bulbasaur instanceof GrassPokemon).toBe(true);
-                    });
-                    test('should have it move set to vine whip ', () => {
-                        //Arrange
-                        const name = 'Bulbasaur'
-                        const hitPoints = 100;
-                        const attackDamage = 40;
-                        const bulbasaur = new Bulbasaur(name, hitPoints, attackDamage); 
-                        //Assert
-                        expect(bulbasaur.move).toBe("vine whip");
-                    });
-                    describe('Rattatta constructor Properties', () => {
-                        test.only('should be an instance of normal pokemon', () => {
-                            //Arrange
-                            const name = 'Rattatta'
-                            const hitPoints = 100;
-                            const attackDamage = 40;
-                            const rattatta = new Rattatta(name, hitPoints, attackDamage); 
-                            //Assert
-                            expect(rattatta instanceof NormalPokemon).toBe(true);
-                        });
+            test('should have it move set to water gun ', () => {
+                //Arrange
+                const name = 'Squirtle'
+                const hitPoints = 100;
+                const attackDamage = 40;
+                const squirtle = new Squirtle(name, hitPoints, attackDamage); 
+                //Assert
+                expect(squirtle.move).toBe("water gun");
+            });
+        });
+        describe('Bulbasaur constructor Properties', () => {
+            test('should be an instance of grass pokemon', () => {
+                //Arrange
+                const name = 'Bulbasaur'
+                const hitPoints = 100;
+                const attackDamage = 40;
+                const bulbasaur = new Bulbasaur(name, hitPoints, attackDamage); 
+                //Assert
+                expect(bulbasaur instanceof GrassPokemon).toBe(true);
+            });
+            test('should have it move set to vine whip ', () => {
+                //Arrange
+                const name = 'Bulbasaur'
+                const hitPoints = 100;
+                const attackDamage = 40;
+                const bulbasaur = new Bulbasaur(name, hitPoints, attackDamage); 
+                //Assert
+                expect(bulbasaur.move).toBe("vine whip");
+            });
+        });
+        describe('Rattatta constructor Properties', () => {
+            test('should be an instance of normal pokemon', () => {
+                //Arrange
+                const name = 'Rattatta'
+                const hitPoints = 100;
+                const attackDamage = 40;
+                const rattatta = new Rattatta(name, hitPoints, attackDamage); 
+                //Assert
+                expect(rattatta instanceof NormalPokemon).toBe(true);
+            });
         });
     });
-})
-})
-})
-})
+});
