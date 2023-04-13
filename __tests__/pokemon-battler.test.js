@@ -82,7 +82,7 @@ describe('pokemonBattler Tests', () => {
                 const pikachu = new Pokemon(name, hitPoints, attackDamage, move); 
                 //Assert
                 expect(pikachu.useMove()).toBe(expectedOutput);
-                expect(consoleSpy).toHaveBeenCalledWith("Pikachu used Pikachu's thunderbolt")
+                expect(consoleSpy).toHaveBeenCalledWith("Pikachu used thunderbolt")
             });
             test('should have a hasFainted method that returns a boolen based on whether the pokeman has fainted or not', () => {
                 //Arrange
@@ -118,8 +118,21 @@ describe('pokemonBattler Tests', () => {
                 expect().toBe();
             });
         });
-        describe('Fire constructor Methods', () => {
-        
+        describe.skip('Fire constructor Methods', () => {
+            test('', () => {
+                //Arrange
+                const name = 'Charmander'
+                const hitPoints = 100;
+                const attackDamage = 40;
+                const move = 'ember'
+                const charmander = new FirePokemon(name, hitPoints, attackDamage, move); 
+                //Assert
+                
+                //Act
+                
+                //Assert
+                expect().toBe();
+            });
         });   
     });
     describe('Water constructor', () => {
@@ -176,11 +189,11 @@ describe('pokemonBattler Tests', () => {
         describe('Grass constructor Methods', () => {
             test('', () => {
                 //Arrange
-                const name = 'Squirtle'
-                const hitPoints = 110;
-                const attackDamage = 35;
-                const move = 'water gun'
-                const squirtle = new WaterPokemon(name, hitPoints, attackDamage, move); 
+                const name = 'Bulbasaur'
+                const hitPoints = 90;
+                const attackDamage = 45;
+                const move = 'vine whip'
+                const bulbasaur = new GrassPokemon(name, hitPoints, attackDamage, move); 
                 //Assert
                 
                 //Act
@@ -210,11 +223,11 @@ describe('pokemonBattler Tests', () => {
         describe('Normal constructor Methods', () => {
             test('', () => {
                 //Arrange
-                const name = 'Squirtle'
-                const hitPoints = 110;
-                const attackDamage = 35;
-                const move = 'water gun'
-                const squirtle = new WaterPokemon(name, hitPoints, attackDamage, move); 
+                const name = 'Rattatta'
+                const hitPoints = 30;
+                const attackDamage = 10;
+                const move = 'scratch'
+                const rattatta = new NormalPokemon(name, hitPoints, attackDamage, move); 
                 //Assert
                 
                 //Act

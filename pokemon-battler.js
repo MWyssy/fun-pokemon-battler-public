@@ -11,7 +11,7 @@ class Pokemon {
     }
 
     useMove() {
-        console.log(`${this.name} used ${this.name}'s ${this.move}`)
+        console.log(`${this.name} used ${this.move}`)
         return this.attackDamage
     }
 
