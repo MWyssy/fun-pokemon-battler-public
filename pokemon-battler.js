@@ -23,7 +23,7 @@ class Pokemon {
 
 class FirePokemon extends Pokemon {
     constructor(name, hitPoints, attackDamage, move) {
-        super(name, hitPoints, attackDamage, move = 'tackle');
+        super(name, hitPoints, attackDamage, move);
     };
 
     isEffectiveAgainst(pokemon) {
@@ -40,7 +40,7 @@ class FirePokemon extends Pokemon {
 
 class WaterPokemon extends Pokemon {
     constructor(name, hitPoints, attackDamage, move) {
-        super(name, hitPoints, attackDamage, move = 'tackle');
+        super(name, hitPoints, attackDamage, move);
     };
 
     isEffectiveAgainst(pokemon) {
@@ -57,7 +57,7 @@ class WaterPokemon extends Pokemon {
 
 class GrassPokemon extends Pokemon {
     constructor(name, hitPoints, attackDamage, move) {
-        super(name, hitPoints, attackDamage, move = 'tackle');
+        super(name, hitPoints, attackDamage, move);
     };
 
     isEffectiveAgainst(pokemon) {
@@ -74,7 +74,7 @@ class GrassPokemon extends Pokemon {
 
 class NormalPokemon extends Pokemon {
     constructor(name, hitPoints, attackDamage, move) {
-        super(name, hitPoints, attackDamage, move = 'tackle');
+        super(name, hitPoints, attackDamage, move);
     };
     isEffectiveAgainst(pokemon) {
         return false;
@@ -85,11 +85,37 @@ class NormalPokemon extends Pokemon {
     };
 };
 
+class Charmander extends FirePokemon {
+    constructor(name, hitPoints, attackDamage, move) {
+        super(name, hitPoints, attackDamage, "ember")
+    }
+}
+class Squirtle extends WaterPokemon {
+    constructor(name, hitPoints, attackDamage, move) {
+        super(name, hitPoints, attackDamage, "water gun")
+    }
+}
+class Bulbasaur extends GrassPokemon {
+    constructor(name, hitPoints, attackDamage, move) {
+        super(name, hitPoints, attackDamage, "vine whip")
+    }
+}
+class Rattatta extends NormalPokemon {
+    constructor(name, hitPoints, attackDamage, move) {
+        super(name, hitPoints, attackDamage, move)
+    }
+}
+
 
 module.exports = {
     Pokemon,
     FirePokemon,
     WaterPokemon,
     GrassPokemon,
-    NormalPokemon
+    NormalPokemon,
+    Charmander,
+    Squirtle,
+    Bulbasaur,
+    Rattatta,
+
 };

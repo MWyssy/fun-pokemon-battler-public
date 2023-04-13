@@ -3,7 +3,11 @@ const {
     FirePokemon, 
     WaterPokemon, 
     GrassPokemon,
-    NormalPokemon 
+    NormalPokemon,
+    Charmander,
+    Squirtle,
+    Bulbasaur,
+    Rattatta,
 } = require('../pokemon-battler.js');
 
 describe('pokemonBattler Tests', () => {
@@ -381,4 +385,79 @@ describe('pokemonBattler Tests', () => {
             });
         });
     });
-});
+
+    describe('Pokemon species constructors', () => {
+        describe('Charmander constructor Properties', () => {
+            test('should be an instance of fire pokemon', () => {
+                //Arrange
+                const name = 'Charmander'
+                const hitPoints = 100;
+                const attackDamage = 40;
+                const charmander = new Charmander(name, hitPoints, attackDamage); 
+                //Assert
+                expect(charmander instanceof FirePokemon).toBe(true);
+            });
+            test('should have it move to be ember', () => {
+                //Arrange
+                const name = 'Charmander'
+                const hitPoints = 100;
+                const attackDamage = 40;
+                const charmander = new Charmander(name, hitPoints, attackDamage); 
+                //Assert
+                expect(charmander.move).toBe("ember");
+            });
+
+            describe('Squirtle constructor Properties', () => {
+                test('should be an instance of water pokemon', () => {
+                    //Arrange
+                    const name = 'Squirtle'
+                    const hitPoints = 100;
+                    const attackDamage = 40;
+                    const squirtle = new Squirtle(name, hitPoints, attackDamage); 
+                    //Assert
+                    expect(squirtle instanceof WaterPokemon).toBe(true);
+                });
+                test('should have it move set to water gun ', () => {
+                    //Arrange
+                    const name = 'Squirtle'
+                    const hitPoints = 100;
+                    const attackDamage = 40;
+                    const squirtle = new Squirtle(name, hitPoints, attackDamage); 
+                    //Assert
+                    expect(squirtle.move).toBe("water gun");
+                });
+                describe('Bulbasaur constructor Properties', () => {
+                    test('should be an instance of grass pokemon', () => {
+                        //Arrange
+                        const name = 'Bulbasaur'
+                        const hitPoints = 100;
+                        const attackDamage = 40;
+                        const bulbasaur = new Bulbasaur(name, hitPoints, attackDamage); 
+                        //Assert
+                        expect(bulbasaur instanceof GrassPokemon).toBe(true);
+                    });
+                    test('should have it move set to vine whip ', () => {
+                        //Arrange
+                        const name = 'Bulbasaur'
+                        const hitPoints = 100;
+                        const attackDamage = 40;
+                        const bulbasaur = new Bulbasaur(name, hitPoints, attackDamage); 
+                        //Assert
+                        expect(bulbasaur.move).toBe("vine whip");
+                    });
+                    describe('Rattatta constructor Properties', () => {
+                        test.only('should be an instance of normal pokemon', () => {
+                            //Arrange
+                            const name = 'Rattatta'
+                            const hitPoints = 100;
+                            const attackDamage = 40;
+                            const rattatta = new Rattatta(name, hitPoints, attackDamage); 
+                            //Assert
+                            expect(rattatta instanceof NormalPokemon).toBe(true);
+                        });
+        });
+    });
+})
+})
+})
+})
