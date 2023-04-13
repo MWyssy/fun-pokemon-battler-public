@@ -140,7 +140,20 @@ describe('pokemonBattler Tests', () => {
             });
         });
         describe('Water constructor Methods', () => {
-        
+            test('', () => {
+                //Arrange
+                const name = 'Squirtle'
+                const hitPoints = 110;
+                const attackDamage = 35;
+                const move = 'water gun'
+                const squirtle = new WaterPokemon(name, hitPoints, attackDamage, move); 
+                //Assert
+                
+                //Act
+                
+                //Assert
+                expect().toBe();
+            });
         });
     });
     describe('Grass constructor', () => {
@@ -161,7 +174,20 @@ describe('pokemonBattler Tests', () => {
             });
         });
         describe('Grass constructor Methods', () => {
-        
+            test('', () => {
+                //Arrange
+                const name = 'Squirtle'
+                const hitPoints = 110;
+                const attackDamage = 35;
+                const move = 'water gun'
+                const squirtle = new WaterPokemon(name, hitPoints, attackDamage, move); 
+                //Assert
+                
+                //Act
+                
+                //Assert
+                expect().toBe();
+            });
         });
     });
     describe('Normal constructor', () => {
@@ -182,7 +208,20 @@ describe('pokemonBattler Tests', () => {
             });
         });
         describe('Normal constructor Methods', () => {
-        
+            test('', () => {
+                //Arrange
+                const name = 'Squirtle'
+                const hitPoints = 110;
+                const attackDamage = 35;
+                const move = 'water gun'
+                const squirtle = new WaterPokemon(name, hitPoints, attackDamage, move); 
+                //Assert
+                
+                //Act
+                
+                //Assert
+                expect().toBe();
+            });
         });
     });
 });
