@@ -1,5 +1,9 @@
 const {
-    Pokemon 
+    Pokemon,
+    FirePokemon, 
+    WaterPokemon, 
+    GrassPokemon,
+    NormalPokemon 
 } = require('../pokemon-battler.js');
 
 describe('pokemonBattler Tests', () => {
@@ -54,7 +58,7 @@ describe('pokemonBattler Tests', () => {
             });
         });
         describe('pokemon methods', () => {
-            test('should have a take damage method that takes a number and reduces health by the number given', () => {
+            test('should have a takeDamage method that takes a number and reduces health by the number given', () => {
                 //Arrange
                 const name = 'Pikachu'
                 const hitPoints = 100;
@@ -80,7 +84,7 @@ describe('pokemonBattler Tests', () => {
                 expect(pikachu.useMove()).toBe(expectedOutput);
                 expect(consoleSpy).toHaveBeenCalledWith("Pikachu used Pikachu's thunderbolt")
             });
-            test('should have a has fainted method that returns a boolen based on whether the pokeman has fainted or not', () => {
+            test('should have a hasFainted method that returns a boolen based on whether the pokeman has fainted or not', () => {
                 //Arrange
                 const name = 'Pikachu'
                 const hitPoints = 100;
@@ -95,6 +99,90 @@ describe('pokemonBattler Tests', () => {
                 //Assert
                 expect(pikachu.hasFainted()).toBe(true);         
             }); 
+        });
+    });
+    describe.only('Fire constructor', () => {
+        describe('Fire constructor Properties', () => {
+            test('', () => {
+                //Arrange
+                const name = 'Charmander'
+                const hitPoints = 100;
+                const attackDamage = 40;
+                const move = 'ember'
+                const charmander = new FirePokemon(name, hitPoints, attackDamage, move); 
+                //Assert
+                
+                //Act
+                
+                //Assert
+                expect().toBe();
+            });
+        });
+        describe('Fire constructor Methods', () => {
+        
+        });   
+    });
+    describe('Water constructor', () => {
+        describe('Water constructor Properties', () => {
+            test('', () => {
+                //Arrange
+                const name = 'Squirtle'
+                const hitPoints = 110;
+                const attackDamage = 35;
+                const move = 'water gun'
+                const squirtle = new WaterPokemon(name, hitPoints, attackDamage, move); 
+                //Assert
+                
+                //Act
+                
+                //Assert
+                expect().toBe();
+            });
+        });
+        describe('Water constructor Methods', () => {
+        
+        });
+    });
+    describe('Grass constructor', () => {
+        describe('Grass constructor Properties', () => {
+            test('', () => {
+                //Arrange
+                const name = 'Bulbasaur'
+                const hitPoints = 90;
+                const attackDamage = 45;
+                const move = 'vine whip'
+                const bulbasaur = new GrassPokemon(name, hitPoints, attackDamage, move); 
+                //Assert
+                
+                //Act
+                
+                //Assert
+                expect().toBe();
+            });
+        });
+        describe('Grass constructor Methods', () => {
+        
+        });
+    });
+    describe('Normal constructor', () => {
+        describe('Normal constructor Properties', () => {
+            test('', () => {
+                //Arrange
+                const name = 'Rattatta'
+                const hitPoints = 30;
+                const attackDamage = 10;
+                const move = 'scratch'
+                const rattatta = new NormalPokemon(name, hitPoints, attackDamage, move); 
+                //Assert
+                
+                //Act
+                
+                //Assert
+                expect().toBe();
+            });
+        });
+        describe('Normal constructor Methods', () => {
+        
         });
     });
 });

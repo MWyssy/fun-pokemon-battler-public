@@ -22,7 +22,35 @@ class Pokemon {
     }
 };
 
+class FirePokemon extends Pokemon {
+    constructor(name, hitPoints, attackDamage, move) {
+        super(name, hitPoints, attackDamage, move = 'tackle');
+    };
+};
+
+class WaterPokemon extends Pokemon {
+    constructor(name, hitPoints, attackDamage, move) {
+        super(name, hitPoints, attackDamage, move = 'tackle');
+    };
+};
+
+class GrassPokemon extends Pokemon {
+    constructor(name, hitPoints, attackDamage, move) {
+        super(name, hitPoints, attackDamage, move = 'tackle');
+    };
+};
+
+class NormalPokemon extends Pokemon {
+    constructor(name, hitPoints, attackDamage, move) {
+        super(name, hitPoints, attackDamage, move = 'tackle');
+    };
+};
+
 
 module.exports = {
-    Pokemon
+    Pokemon,
+    FirePokemon,
+    WaterPokemon,
+    GrassPokemon,
+    NormalPokemon
 };
