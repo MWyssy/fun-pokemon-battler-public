@@ -1,15 +1,17 @@
 class Pokemon {
-    constructor(name) {
+    constructor(name, hitPoints, attackDamage, move = 'tackle') {
         this.name = name;
-        this.hitPoints = 50;
-        this.attackDamage = 20;
-        this.move = 'tackle';
+        this.hitPoints = hitPoints;
+        this.attackDamage = attackDamage;
+        this.move = move;
     };
+
     takeDamage(damage) {
         return this.hitPoints -= damage
     }
+
     useMove() {
-        console.log(`${this.name} used ${this.name}'s move`)
+        console.log(`${this.name} used ${this.name}'s ${this.move}`)
         return this.attackDamage
     }
 
@@ -21,4 +23,6 @@ class Pokemon {
 };
 
 
-module.exports = Pokemon;
+module.exports = {
+    Pokemon
+};
