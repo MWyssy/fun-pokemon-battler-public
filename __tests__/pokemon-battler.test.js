@@ -605,7 +605,7 @@ describe('pokemonBattler Tests', () => {
                  //Assert
                  expect(megan.belt[2].storedPokemon).toEqual(pikachu2)
             })
-            test('should have a catch method that takes a pokemon as an argument and uses an empty pokeball to catch the pokemon', () => {  
+            test('should have a catch method that informs the user, when they try to catch another pokemon, that all the pokeballs are full', () => {  
                 //Arrange
                 const megan = new Trainer("megan")
                 const name = 'Pikachu'
@@ -629,12 +629,12 @@ describe('pokemonBattler Tests', () => {
                 megan.catch(pikachu6)
                 megan.catch(pikachu7)
                 //Assert
-                expect(consoleSpy).toHaveBeenCalledWith("Oops all your pokeballs are full!")
+                expect(consoleSpy).toHaveBeenCalledWith("Oops! All your pokeballs are full!")
                 consoleSpy.mockRestore();
         
                 
             })
-            test.only('should have a get pokemon method that takes a name of a pokemon currently stored in one of the pokeballs and returns that pokemon', () => {  
+            test('should have a get pokemon method that takes a name of a pokemon currently stored in one of the pokeballs and returns that pokemon', () => {  
                 //Arrange
                 const megan = new Trainer("megan")
                 const hitPoints = 100;
@@ -646,22 +646,41 @@ describe('pokemonBattler Tests', () => {
                 const bulbasaur = new Bulbasaur("Bulbasaur", 70, attackDamage);
                 const rattatta = new Rattatta("Rattatta", 60, attackDamage, "scratch");
                 const pidgey = new Pokemon("Pidgey", 50, attackDamage);
-                //Act
                 megan.catch(pikachu)
                 megan.catch(charmander)
                 megan.catch(squirtle)
                 megan.catch(bulbasaur)
                 megan.catch(rattatta)
                 megan.catch(pidgey)
+                //Act
                 //Assert
                 expect(megan.getPokemon(bulbasaur)).toEqual(bulbasaur)
-                
-        
-                
-            })
-        })
-    })
-
-
-
-})
+            });
+            test('should have a get pokemon method that takes a name of a pokemon currently stored in one of the pokeballs. If the pokemon is not present, then a message is logged to the user letting them know', () => {  
+                //Arrange
+                const megan = new Trainer("megan")
+                const hitPoints = 100;
+                const attackDamage = 50;
+                const move = 'thunderbolt'
+                const pikachu = new Pokemon("Pikachu", hitPoints, attackDamage, move); 
+                const charmander = new Charmander("Charmander", 90, attackDamage);
+                const squirtle = new Squirtle("Squirtle", 80, attackDamage);
+                const bulbasaur = new Bulbasaur("Bulbasaur", 70, attackDamage);
+                const rattatta = new Rattatta("Rattatta", 60, attackDamage, "scratch");
+                const pidgey = new Pokemon("Pidgey", 50, attackDamage);
+                const consoleSpy = jest.spyOn(console, 'log');
+                megan.catch(pikachu)
+                megan.catch(charmander)
+                megan.catch(squirtle)
+                megan.catch(bulbasaur)
+                megan.catch(rattatta)
+                megan.catch(pidgey)
+                //Act
+                megan.getPokemon('Gengar')
+                //Assert
+                expect(consoleSpy).toHaveBeenCalledWith('Oops! You don\'t have that pokemon!');
+                consoleSpy.mockRestore();
+            });
+        });
+    });
+});

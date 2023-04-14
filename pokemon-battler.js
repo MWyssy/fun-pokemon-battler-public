@@ -153,40 +153,46 @@ class Trainer {
     #belt
     constructor(name) {
         this.#name = name;
-        this.#belt = {}
-        this.#belt[1] = new Pokeball
-        this.#belt[2] = new Pokeball
-        this.#belt[3] = new Pokeball
-        this.#belt[4] = new Pokeball
-        this.#belt[5] = new Pokeball
-        this.#belt[6] = new Pokeball
-        
-        
-        
-    }
-get belt() {
-    return this.#belt
-}
-catch(pokemon) {
-    if(!pokemon) {
-        throw new Error("catch needs a pokemon as an argument")
-    }
-    for(let i = 1; i < 7; i++) {
-        if(this.#belt[i].isEmpty()) {
-            return this.#belt[i].throw(pokemon)
-        }
-    }
-    return console.log("Oops all your pokeballs are full!")
-}
-getPokemon(pokemon) {
-    console.log(this.#belt[4])
-    for(let i = 1; i < 7; i++) {
-        if(this.#belt[i].name === pokemon.name) {
-            return this.#belt[i].throw()
-        }
-    }
-}
-}
+        this.#belt = {};
+        this.#belt[1] = new Pokeball;
+        this.#belt[2] = new Pokeball;
+        this.#belt[3] = new Pokeball;
+        this.#belt[4] = new Pokeball;
+        this.#belt[5] = new Pokeball;
+        this.#belt[6] = new Pokeball ;
+    };
+
+    get belt() {
+        return this.#belt;
+    };
+
+    get name() {
+        return this.#name;
+    };
+
+    catch(pokemon) {
+        if(!pokemon) {
+            throw new Error("catch needs a pokemon as an argument");
+        };
+
+        for(let i = 1; i < 7; i++) {
+            if(this.#belt[i].isEmpty()) {
+                return this.#belt[i].throw(pokemon);
+            };
+        };
+        return console.log("Oops! All your pokeballs are full!");
+    };
+
+    getPokemon(pokemon) {
+        for(let i = 1; i < 7; i++) {
+            if(this.belt[i].storedPokemon.name === pokemon.name) {
+                return this.#belt[i].throw();
+            };
+        };
+        return console.log('Oops! You don\'t have that pokemon!')
+    };
+
+};
 
 
 module.exports = {
