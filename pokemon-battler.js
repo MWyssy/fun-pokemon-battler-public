@@ -120,5 +120,5 @@ module.exports = {
     Squirtle,
     Bulbasaur,
     Rattatta,
-
+    Pokeball
 };

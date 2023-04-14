@@ -8,6 +8,7 @@ const {
     Squirtle,
     Bulbasaur,
     Rattatta,
+    Pokeball
 } = require('../pokemon-battler.js');
 
 describe('pokemonBattler Tests', () => {
@@ -391,6 +392,48 @@ describe('pokemonBattler Tests', () => {
                 const rattatta = new Rattatta(name, hitPoints, attackDamage); 
                 //Assert
                 expect(rattatta instanceof NormalPokemon).toBe(true);
+            });
+        });
+    });
+    describe('Pokeball constructor', () => {
+        describe('Pokeball properties', () => {
+            test('should have a storedPokemon property', () => {
+                //Arrange
+                const myPokeball = new Pokeball;
+                //Act
+
+                //Assert
+                expect().toBe();
+            });
+            test.skip('', () => {
+                //Arrange
+                const name = 'Pikachu'
+                const hitPoints = 100;
+                const attackDamage = 50;
+                const move = 'thunderbolt'
+                const expectedOutput = 'thunderbolt';  
+                const pikachu = new Pokemon(name, hitPoints, attackDamage, move); 
+                const myPokeball = new Pokeball;
+                //Act
+
+                //Assert
+                expect().toBe();
+            });
+        });
+        describe('Pokeball methods', () => {
+            test.skip('', () => {
+                //Arrange
+                const name = 'Pikachu'
+                const hitPoints = 100;
+                const attackDamage = 50;
+                const move = 'thunderbolt'
+                const expectedOutput = 'thunderbolt';  
+                const pikachu = new Pokemon(name, hitPoints, attackDamage, move); 
+                const myPokeball = new Pokeball;
+                //Act
+
+                //Assert
+                expect().toBe();
             });
         });
     });
