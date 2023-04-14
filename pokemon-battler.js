@@ -159,7 +159,7 @@ class Trainer {
         this.#belt[3] = new Pokeball;
         this.#belt[4] = new Pokeball;
         this.#belt[5] = new Pokeball;
-        this.#belt[6] = new Pokeball ;
+        this.#belt[6] = new Pokeball;
     };
 
     get belt() {
@@ -185,13 +185,60 @@ class Trainer {
 
     getPokemon(pokemon) {
         for(let i = 1; i < 7; i++) {
-            if(this.belt[i].storedPokemon.name === pokemon.name) {
+            if(this.belt[i].storedPokemon.name === pokemon) {
                 return this.#belt[i].throw();
             };
         };
         return console.log('Oops! You don\'t have that pokemon!')
     };
 
+};
+
+class Battle {
+    #trainerOne;
+    #trainerTwo;
+    #trainerOnePokemon;
+    #trainerTwoPokemon;
+    constructor(trainerOne, trainerOnePokemon, trainerTwo, trainerTwoPokemon) {
+        this.#trainerOne = trainerOne;
+        this.#trainerTwo = trainerTwo;
+        this.#trainerOnePokemon = trainerOnePokemon;
+        this.#trainerTwoPokemon = trainerTwoPokemon;
+    };
+
+    get trainerOne() {
+        return this.#trainerOne;
+    };
+    get trainerTwo() {
+        return this.#trainerTwo;
+    };
+    get trainerOnePokemon() {
+        return this.#trainerOnePokemon;
+    };
+    get trainerTwoPokemon() {
+        return this.#trainerTwoPokemon;
+    };
+
+    fight(turnOfPokemon) {
+        if (!turnOfPokemon) {
+            throw new Error('Oh No! You haven\'t specified which pokemon\'s turn it is!')
+        };
+
+        let attackingTrainer = this.#trainerOne;
+        let attackingPokemon = this.#trainerOne.getPokemon(this.#trainerOnePokemon);
+        let defendingTrainer = this.#trainerTwo;
+        let defendingPokemon = this.#trainerTwo.getPokemon(this.#trainerTwoPokemon);
+        if (this.#trainerTwoPokemon === turnOfPokemon) {
+            attackingTrainer = this.#trainerTwo;
+            attackingPokemon = this.#trainerTwo.getPokemon(this.#trainerTwoPokemon);
+            defendingTrainer = this.#trainerOne;
+            defendingPokemon = this.#trainerOne.getPokemon(this.#trainerOnePokemon);
+        };
+
+
+
+        return console.log(`${attackingTrainer.name}'s ${attackingPokemon.name} used ${attackingPokemon.move} on ${defendingTrainer.name}'s ${defendingPokemon.name}!`);
+    };
 };
 
 
@@ -207,5 +254,5 @@ module.exports = {
     Rattatta,
     Pokeball,
     Trainer,
-
+    Battle
 };

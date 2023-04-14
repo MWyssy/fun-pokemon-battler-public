@@ -9,7 +9,8 @@ const {
     Bulbasaur,
     Rattatta,
     Pokeball,
-    Trainer
+    Trainer,
+    Battle
 } = require('../pokemon-battler.js');
 
 describe('pokemonBattler Tests', () => {
@@ -505,7 +506,7 @@ describe('pokemonBattler Tests', () => {
                 expect(consoleSpy).toHaveBeenCalledWith('you caught Charmander!');
                 consoleSpy.mockRestore();
             });
-            test('Uses throw method with no argument and returns the stored pokemon', () => {
+            test('Use of the throw method with no argument returns the stored pokemon', () => {
                 //Arrange
                 const name = 'Pikachu'
                 const hitPoints = 100;
@@ -631,8 +632,6 @@ describe('pokemonBattler Tests', () => {
                 //Assert
                 expect(consoleSpy).toHaveBeenCalledWith("Oops! All your pokeballs are full!")
                 consoleSpy.mockRestore();
-        
-                
             })
             test('should have a get pokemon method that takes a name of a pokemon currently stored in one of the pokeballs and returns that pokemon', () => {  
                 //Arrange
@@ -654,7 +653,7 @@ describe('pokemonBattler Tests', () => {
                 megan.catch(pidgey)
                 //Act
                 //Assert
-                expect(megan.getPokemon(bulbasaur)).toEqual(bulbasaur)
+                expect(megan.getPokemon('Bulbasaur')).toEqual(bulbasaur)
             });
             test('should have a get pokemon method that takes a name of a pokemon currently stored in one of the pokeballs. If the pokemon is not present, then a message is logged to the user letting them know', () => {  
                 //Arrange
@@ -682,5 +681,59 @@ describe('pokemonBattler Tests', () => {
                 consoleSpy.mockRestore();
             });
         });
+    });
+    describe('Battle constructor', () => {
+        test('should take two trainers, and their chosen pokemon for the battle, as arguments, and store them as properties', () => {  
+            //Arrange
+            const megan = new Trainer("megan");
+            const ash = new Trainer("Ash");
+            const charmander = new Charmander('Charmander', 110, 30); 
+            const squirtle = new Squirtle('Squirtle', 90, 25);
+            megan.catch(charmander);
+            ash.catch(squirtle);
+            const testBattle = new Battle(megan, megan.belt[1].storedPokemon.name, ash, ash.belt[1].storedPokemon.name)
+            //Assert
+            expect(testBattle.trainerOne).toEqual(megan);
+            expect(testBattle.trainerTwo).toEqual(ash);
+            expect(testBattle.trainerOnePokemon).toEqual(charmander.name);
+            expect(testBattle.trainerTwoPokemon).toEqual(squirtle.name);
+        });
+        describe('Fight Method', () => {
+            test('should have a Fight method that takes which pokemon\'s turn it as an argument. If an argument is not passed in, it will throw an error.', () => {  
+                //Arrange
+                const megan = new Trainer("megan");
+                const ash = new Trainer("Ash");
+                const charmander = new Charmander('Charmander', 110, 30); 
+                const squirtle = new Squirtle('Squirtle', 90, 25);
+                megan.catch(charmander);
+                ash.catch(squirtle);
+                const testBattle = new Battle(megan, megan.belt[1].storedPokemon.name, ash, ash.belt[1].storedPokemon.name);
+                //Act
+                //Assert
+                expect(testBattle.fight).toThrow(new Error("Oh No! You haven\'t specified which pokemon\'s turn it is!"))
+            });
+            test('when called, the pokemon passed into the fight method should attack the defending pokemon, logging an attack message.', () => {  
+                //Arrange
+                const megan = new Trainer("Megan");
+                const ash = new Trainer("Ash");
+                const charmander = new Charmander('Charmander', 80, 30); 
+                const squirtle = new Squirtle('Squirtle', 90, 25);
+
+                megan.catch(charmander);
+
+                ash.catch(squirtle);
+
+                const testBattle = new Battle(megan, megan.belt[1].storedPokemon.name, ash, ash.belt[1].storedPokemon.name);
+                const consoleSpy = jest.spyOn(console, 'log');
+                //Act
+                testBattle.fight(testBattle.trainerOnePokemon);
+                //Assert
+                expect(consoleSpy).toHaveBeenCalledWith('Megan\'s Charmander used ember on Ash\'s Squirtle!')
+                //Act
+                testBattle.fight(testBattle.trainerTwoPokemon);
+                //Assert
+                expect(consoleSpy).toHaveBeenCalledWith('Ash\'s Squirtle used water gun on Megan\'s Charmander!')
+            });
+        });    
     });
 });
