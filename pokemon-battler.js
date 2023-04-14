@@ -109,6 +109,39 @@ class Rattatta extends NormalPokemon {
     }
 };
 
+class Pokeball {
+    #storage;                                                                                            
+    constructor() {
+        this.#storage = {};
+    };
+
+    get storedPokemon() {
+        return this.#storage;
+    };
+
+    throw(pokemon) {
+        
+
+        if (!this.isEmpty()) {
+            return console.log(`You can't catch this ${pokemon.name}, you already have a ${this.#storage.name} in your pokeball!`)
+        };
+        return this.#storage = pokemon;    
+    };
+
+    isEmpty() {
+        if (Object.keys(this.#storage).length === 0) return true;
+        return false
+    };
+
+    contains() {
+        if (this.isEmpty()) {
+            return 'empty...'
+        };
+        return `${this.#storage.name}`;
+    };
+
+};
+
 
 module.exports = {
     Pokemon,

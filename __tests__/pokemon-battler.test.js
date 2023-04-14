@@ -87,7 +87,8 @@ describe('pokemonBattler Tests', () => {
                 const pikachu = new Pokemon(name, hitPoints, attackDamage, move); 
                 //Assert
                 expect(pikachu.useMove()).toBe(expectedOutput);
-                expect(consoleSpy).toHaveBeenCalledWith("Pikachu used thunderbolt")
+                expect(consoleSpy).toHaveBeenCalledWith("Pikachu used thunderbolt");
+                consoleSpy.mockRestore();
             });
             test('should have a hasFainted method that returns a boolen based on whether the pokeman has fainted or not', () => {
                 //Arrange
@@ -401,39 +402,100 @@ describe('pokemonBattler Tests', () => {
                 //Arrange
                 const myPokeball = new Pokeball;
                 //Act
-
+                console.log(myPokeball.storedPokemon)
                 //Assert
-                expect().toBe();
+                expect(myPokeball.storedPokemon).not.toBe(undefined);
             });
-            test.skip('', () => {
+            test('the storedPokemon property should be able to hold a pokemon and return that pokemon, or if it is empty, return an empty object', () => {
                 //Arrange
                 const name = 'Pikachu'
                 const hitPoints = 100;
                 const attackDamage = 50;
                 const move = 'thunderbolt'
-                const expectedOutput = 'thunderbolt';  
                 const pikachu = new Pokemon(name, hitPoints, attackDamage, move); 
                 const myPokeball = new Pokeball;
-                //Act
-
                 //Assert
-                expect().toBe();
+                expect(myPokeball.storedPokemon).toEqual({});
+                //Act
+                myPokeball.throw(pikachu)
+                //Assert
+                expect(myPokeball.storedPokemon).toBe(pikachu);
             });
         });
         describe('Pokeball methods', () => {
-            test.skip('', () => {
+            test('should have a contains method that returns the name of the pokemon stored in the Pokeball, or the string "empty..." otherwise', () => {
                 //Arrange
                 const name = 'Pikachu'
                 const hitPoints = 100;
                 const attackDamage = 50;
                 const move = 'thunderbolt'
-                const expectedOutput = 'thunderbolt';  
+                const pikachu = new Pokemon(name, hitPoints, attackDamage, move); 
+                const myPokeball = new Pokeball;
+                //Assert
+                expect(myPokeball.contains()).toBe("empty...");
+                //Act
+                myPokeball.throw(pikachu);
+                //Assert
+                expect(myPokeball.contains()).toBe('Pikachu');
+            });
+            test('should have an isEmpty method that returns true if there is no Pokemon stored in the pokeball, or false otherwise', () => {
+                //Arrange
+                const name = 'Pikachu'
+                const hitPoints = 100;
+                const attackDamage = 50;
+                const move = 'thunderbolt'
+                const pikachu = new Pokemon(name, hitPoints, attackDamage, move); 
+                const myPokeball = new Pokeball;
+                //Assert
+                expect(myPokeball.isEmpty()).toBe(true);
+                //Act
+                myPokeball.throw(pikachu);
+                //Assert
+                expect(myPokeball.isEmpty()).toBe(false);
+            });
+            test('should have throw method, that takes a pokemon as an argument, and will \'capture\' the passed pokemon by adding it to storedPokemon', () => {
+                //Arrange
+                const name = 'Pikachu'
+                const hitPoints = 100;
+                const attackDamage = 50;
+                const move = 'thunderbolt'
                 const pikachu = new Pokemon(name, hitPoints, attackDamage, move); 
                 const myPokeball = new Pokeball;
                 //Act
-
+                myPokeball.throw(pikachu);
                 //Assert
-                expect().toBe();
+                expect(myPokeball.storedPokemon).toBe(pikachu);
+            });
+            test('should have a throw method, that will not allow a pokemon to be captured if there is already a stored pokemon, and logs a message to the console', () => {
+                //Arrange
+                const name = 'Pikachu'
+                const hitPoints = 100;
+                const attackDamage = 50;
+                const move = 'thunderbolt'
+                const pikachu = new Pokemon(name, hitPoints, attackDamage, move); 
+                const charmander = new Charmander('Charmander', 100, 40);  
+                const myPokeball = new Pokeball;
+                const consoleSpy = jest.spyOn(console, 'log')
+                //Act
+                myPokeball.throw(pikachu);
+                myPokeball.throw(charmander);
+                //Assert
+                expect(myPokeball.storedPokemon).toBe(pikachu);
+                expect(consoleSpy).toHaveBeenCalledWith('You can\'t catch this Charmander, you already have a Pikachu in your pokeball!');
+                consoleSpy.mockRestore();
+            });
+            test.only('', () => {
+                //Arrange
+                const name = 'Pikachu'
+                const hitPoints = 100;
+                const attackDamage = 50;
+                const move = 'thunderbolt'
+                const pikachu = new Pokemon(name, hitPoints, attackDamage, move); 
+                const myPokeball = new Pokeball;
+                //Act
+                myPokeball.throw(pikachu);
+                //Assert
+                expect(myPokeball.storedPokemon).toBe(pikachu);
             });
         });
     });
