@@ -120,11 +120,17 @@ class Pokeball {
     };
 
     throw(pokemon) {
-        
+        if (!pokemon && !this.isEmpty()) {
+            console.log(`GO ${this.#storage.name}!!`)
+            return this.#storage;
+        } else if (!pokemon && this.isEmpty()) {
+            return console.log('Oh No! Your pokeball is empty!!');
+        };
 
         if (!this.isEmpty()) {
-            return console.log(`You can't catch this ${pokemon.name}, you already have a ${this.#storage.name} in your pokeball!`)
+            return console.log(`You can't catch this ${pokemon.name}, you already have a ${this.#storage.name} in your pokeball!`);
         };
+        console.log(`you caught ${pokemon.name}!`)
         return this.#storage = pokemon;    
     };
 

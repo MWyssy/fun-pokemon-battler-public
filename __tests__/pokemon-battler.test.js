@@ -18,7 +18,6 @@ describe('pokemonBattler Tests', () => {
                 //Arrange
                 const input = 'Pikachu'
                 const expectedOutput = input  
-                //Act
                 const pikachu = new Pokemon(input)
                 //Assert
                 expect(pikachu.name).toBe(expectedOutput);
@@ -475,7 +474,7 @@ describe('pokemonBattler Tests', () => {
                 const pikachu = new Pokemon(name, hitPoints, attackDamage, move); 
                 const charmander = new Charmander('Charmander', 100, 40);  
                 const myPokeball = new Pokeball;
-                const consoleSpy = jest.spyOn(console, 'log')
+                const consoleSpy = jest.spyOn(console, 'log');
                 //Act
                 myPokeball.throw(pikachu);
                 myPokeball.throw(charmander);
@@ -484,7 +483,7 @@ describe('pokemonBattler Tests', () => {
                 expect(consoleSpy).toHaveBeenCalledWith('You can\'t catch this Charmander, you already have a Pikachu in your pokeball!');
                 consoleSpy.mockRestore();
             });
-            test.only('', () => {
+            test('the throw method should console log \'you caught xpokemon\' when a pokemon is caught', () => {
                 //Arrange
                 const name = 'Pikachu'
                 const hitPoints = 100;
@@ -492,10 +491,57 @@ describe('pokemonBattler Tests', () => {
                 const move = 'thunderbolt'
                 const pikachu = new Pokemon(name, hitPoints, attackDamage, move); 
                 const myPokeball = new Pokeball;
+                const mySecondPokeball = new Pokeball;
+                const charmander = new Charmander('Charmander', 100, 40)
+                const consoleSpy = jest.spyOn(console, 'log');
                 //Act
                 myPokeball.throw(pikachu);
                 //Assert
-                expect(myPokeball.storedPokemon).toBe(pikachu);
+                expect(consoleSpy).toHaveBeenCalledWith('you caught Pikachu!');
+                //Act
+                mySecondPokeball.throw(charmander);
+                //Assert
+                expect(consoleSpy).toHaveBeenCalledWith('you caught Charmander!');
+                consoleSpy.mockRestore();
+            });
+            test('Uses throw method with no argument and returns the stored pokemon', () => {
+                //Arrange
+                const name = 'Pikachu'
+                const hitPoints = 100;
+                const attackDamage = 50;
+                const move = 'thunderbolt'
+                const pikachu = new Pokemon(name, hitPoints, attackDamage, move); 
+                const myPokeball = new Pokeball;
+                myPokeball.throw(pikachu);
+
+                //Assert
+                expect(myPokeball.throw()).toBe(pikachu);
+            });
+            test('If the throw method is called without an argument then it should console log something like ("GO pokemonX\'s name!!") in this scenario.', () => {
+                //Arrange
+                const name = 'Pikachu'
+                const hitPoints = 100;
+                const attackDamage = 50;
+                const move = 'thunderbolt'
+                const pikachu = new Pokemon(name, hitPoints, attackDamage, move); 
+                const myPokeball = new Pokeball;
+                myPokeball.throw(pikachu);
+                const consoleSpy = jest.spyOn(console, 'log');
+                //Act
+                myPokeball.throw()
+                //Assert
+                expect(consoleSpy).toHaveBeenCalledWith('GO Pikachu!!');
+                consoleSpy.mockRestore();
+            });
+            test('If the throw method is called without an argument, and there is no stored pokemon, then it should log a message to inform the user.', () => {
+                //Arrange
+                const myPokeball = new Pokeball;
+                const consoleSpy = jest.spyOn(console, 'log');
+                //Act
+                myPokeball.throw();
+                //Assert
+                expect(consoleSpy).toHaveBeenCalledWith('Oh No! Your pokeball is empty!!');
+                consoleSpy.mockRestore();
             });
         });
     });
