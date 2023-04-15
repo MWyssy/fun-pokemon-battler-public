@@ -1,3 +1,72 @@
+const inquirer = require('inquirer');
+
+const firstQuestions = [
+    {
+        type: 'input',
+        name: 'name',
+        message: 'What is your name?',
+        default: 'Ash',
+    },
+    {
+        type: 'list',
+        name: 'pokemon',
+        message: 'Which pokemon do you choose?',
+        choices: ['Charmander', 'Squirtle', 'Bulbasaur']
+    },
+    {
+        type: 'input',
+        name: 'opponentName',
+        message: 'What is your opponents name?',
+        default: 'Megan',
+    },
+    {
+        type: 'list',
+        name: 'opponentPokemon',
+        message: 'Which pokemon does your opponent choose?',
+        choices: ['Charmander', 'Squirtle', 'Bulbasaur']
+    }
+];
+
+
+
+function playGame() {
+    inquirer
+        .prompt(firstQuestions)
+        .then(function (firstAnswers) {
+            console.log(firstAnswers);
+            const player = new Trainer(firstAnswers.name);
+            let playerPokemon = {};
+            if (firstAnswers.pokemon === 'Squirtle') {
+                playerPokemon = new Squirtle('Squirtle', 100, 25);
+            } else if (firstAnswers.pokemon === 'Charmander') {
+                playerPokemon = new Charmander('Charmander', 90, 35);
+            } else if (firstAnswers.pokemon === 'Bulbasaur') {
+                playerPokemon = new Bulbasaur('Bulbasaur', 110, 30);
+            };
+            player.catch(playerPokemon);
+            const opponent = new Trainer(firstAnswers.opponentName)
+            let opponentPokemon = {};
+            if (firstAnswers.opponentPokemon === 'Squirtle') {
+                opponentPokemon = new Squirtle('Squirtle', 100, 25);
+            } else if (firstAnswers.opponentPokemon === 'Charmander') {
+                opponentPokemon = new Charmander('Charmander', 90, 35);
+            } else if (firstAnswers.opponentPokemon === 'Bulbasaur') {
+                opponentPokemon = new Bulbasaur('Bulbasaur', 110, 30);
+            };
+            opponent.catch(opponentPokemon);
+            const battle = new Battle(player, playerPokemon.name, opponent, opponentPokemon.name);
+            while (!battle.fightIsOver) {
+                battle.fight();
+                console.log(`Your ${playerPokemon.name}'s health is ${playerPokemon.hitPoints}!`);
+                console.log(`${opponent.name}'s ${opponentPokemon.name}'s health is ${opponentPokemon.hitPoints}!`);
+            };
+            return 
+        });
+        
+};
+
+playGame();
+
 class Pokemon {
     constructor(name, hitPoints, attackDamage, move = 'tackle') {
         this.name = name;
@@ -16,7 +85,7 @@ class Pokemon {
     }
 
     hasFainted() {
-        if(this.hitPoints === 0) return true;
+        if(this.hitPoints <= 0) return true;
         return false; 
     }
 };
@@ -204,6 +273,8 @@ class Battle {
         this.#trainerTwo = trainerTwo;
         this.#trainerOnePokemon = trainerOnePokemon;
         this.#trainerTwoPokemon = trainerTwoPokemon;
+        this.turnOfPokemon = this.firstTurnGenerator();
+        this.fightIsOver = false;
     };
 
     get trainerOne() {
@@ -219,25 +290,57 @@ class Battle {
         return this.#trainerTwoPokemon;
     };
 
-    fight(turnOfPokemon) {
-        if (!turnOfPokemon) {
-            throw new Error('Oh No! You haven\'t specified which pokemon\'s turn it is!')
+    firstTurnGenerator() {
+        function randomise(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1) + min);
         };
+        const firstTurnRandomiser = randomise(1, 2);
+        let firstTurnPokemon = this.#trainerOnePokemon;
+        if (firstTurnRandomiser === 2) {
+            firstTurnPokemon = this.#trainerTwoPokemon;
+        };
+        return firstTurnPokemon;
+    };
 
+    fight() {
+        //Declaring Variables
         let attackingTrainer = this.#trainerOne;
         let attackingPokemon = this.#trainerOne.getPokemon(this.#trainerOnePokemon);
         let defendingTrainer = this.#trainerTwo;
         let defendingPokemon = this.#trainerTwo.getPokemon(this.#trainerTwoPokemon);
-        if (this.#trainerTwoPokemon === turnOfPokemon) {
+        if (this.#trainerTwoPokemon === this.turnOfPokemon) {
             attackingTrainer = this.#trainerTwo;
             attackingPokemon = this.#trainerTwo.getPokemon(this.#trainerTwoPokemon);
             defendingTrainer = this.#trainerOne;
             defendingPokemon = this.#trainerOne.getPokemon(this.#trainerOnePokemon);
         };
 
+        //Attack phase
+        let damage = attackingPokemon.attackDamage;
+        let effectivenessMessage = '';
+        if (attackingPokemon.isEffectiveAgainst(defendingPokemon)) {
+            effectivenessMessage = 'It was super effective!';
+            damage *= 1.25;
+        };
+        if (attackingPokemon.isWeakTo(defendingPokemon)) {
+            effectivenessMessage = 'It was not very effective!';
+            damage *= 0.75;
+        };
+        defendingPokemon.hitPoints = Math.round(defendingPokemon.hitPoints - damage);
+
+        //Check to see if there is a winner
+        if (defendingPokemon.hasFainted()) {
+            this.fightIsOver = true;
+            return console.log(`${attackingTrainer.name}'s ${attackingPokemon.name} wins!`);
+        };
+
+        //Switch pokemon's turn
+        this.turnOfPokemon = defendingPokemon.name;
 
 
-        return console.log(`${attackingTrainer.name}'s ${attackingPokemon.name} used ${attackingPokemon.move} on ${defendingTrainer.name}'s ${defendingPokemon.name}!`);
+        return console.log(`${attackingTrainer.name}'s ${attackingPokemon.name} used ${attackingPokemon.move} on ${defendingTrainer.name}'s ${defendingPokemon.name}! ${effectivenessMessage}`);
     };
 };
 

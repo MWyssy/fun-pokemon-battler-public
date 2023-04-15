@@ -403,7 +403,6 @@ describe('pokemonBattler Tests', () => {
                 //Arrange
                 const myPokeball = new Pokeball;
                 //Act
-                console.log(myPokeball.storedPokemon)
                 //Assert
                 expect(myPokeball.storedPokemon).not.toBe(undefined);
             });
@@ -699,9 +698,9 @@ describe('pokemonBattler Tests', () => {
             expect(testBattle.trainerTwoPokemon).toEqual(squirtle.name);
         });
         describe('Fight Method', () => {
-            test('should have a Fight method that takes which pokemon\'s turn it as an argument. If an argument is not passed in, it will throw an error.', () => {  
+            test('should have a Fight method that uses a random pokemon for the first turn, then switches pokemon each time it is called', () => {  
                 //Arrange
-                const megan = new Trainer("megan");
+                const megan = new Trainer("Megan");
                 const ash = new Trainer("Ash");
                 const charmander = new Charmander('Charmander', 110, 30); 
                 const squirtle = new Squirtle('Squirtle', 90, 25);
@@ -709,10 +708,16 @@ describe('pokemonBattler Tests', () => {
                 ash.catch(squirtle);
                 const testBattle = new Battle(megan, megan.belt[1].storedPokemon.name, ash, ash.belt[1].storedPokemon.name);
                 //Act
+                const firstTurnPokemon = testBattle.turnOfPokemon;
+                testBattle.fight();
                 //Assert
-                expect(testBattle.fight).toThrow(new Error("Oh No! You haven\'t specified which pokemon\'s turn it is!"))
+                expect(testBattle.turnOfPokemon).not.toBe(firstTurnPokemon)
+                //Act
+                testBattle.fight();
+                //Assert
+                expect(testBattle.turnOfPokemon).toBe(firstTurnPokemon)
             });
-            test('when called, the pokemon passed into the fight method should attack the defending pokemon, logging an attack message.', () => {  
+            test('when called, the pokemon who\'s turn it is should attack the defending pokemon, logging an attack message, which will vary depending on the defender\'s weakness/strength', () => {  
                 //Arrange
                 const megan = new Trainer("Megan");
                 const ash = new Trainer("Ash");
@@ -726,13 +731,55 @@ describe('pokemonBattler Tests', () => {
                 const testBattle = new Battle(megan, megan.belt[1].storedPokemon.name, ash, ash.belt[1].storedPokemon.name);
                 const consoleSpy = jest.spyOn(console, 'log');
                 //Act
-                testBattle.fight(testBattle.trainerOnePokemon);
+                testBattle.fight();
+                testBattle.fight();
                 //Assert
-                expect(consoleSpy).toHaveBeenCalledWith('Megan\'s Charmander used ember on Ash\'s Squirtle!')
+                expect(consoleSpy).toHaveBeenCalledWith('Megan\'s Charmander used ember on Ash\'s Squirtle! It was not very effective!');
+                expect(consoleSpy).toHaveBeenCalledWith('Ash\'s Squirtle used water gun on Megan\'s Charmander! It was super effective!');
+                consoleSpy.mockRestore();
+            });
+            test('when called, the pokemon who\'s turn it is should attack the defending pokemon, reducing their hitPoints by the amount of their attack damage, taking into account their strengths and weaknessess', () => {  
+                //Arrange
+                const megan = new Trainer("Megan");
+                const ash = new Trainer("Ash");
+                const charmander = new Charmander('Charmander', 80, 30); 
+                const squirtle = new Squirtle('Squirtle', 90, 25);
+
+                megan.catch(charmander);
+
+                ash.catch(squirtle);
+
+                const testBattle = new Battle(megan, megan.belt[1].storedPokemon.name, ash, ash.belt[1].storedPokemon.name);
                 //Act
-                testBattle.fight(testBattle.trainerTwoPokemon);
+                testBattle.fight();
+                testBattle.fight();
                 //Assert
-                expect(consoleSpy).toHaveBeenCalledWith('Ash\'s Squirtle used water gun on Megan\'s Charmander!')
+                expect(charmander.hitPoints).toBe(49);
+                expect(squirtle.hitPoints).toBe(68);
+            });
+            test('If the defending pokemon faints, the attacker wins', () => {  
+                //Arrange
+                const megan = new Trainer("Megan");
+                const ash = new Trainer("Ash");
+                const charmander = new Charmander('Charmander', 80, 30); 
+                const squirtle = new Squirtle('Squirtle', 90, 25);
+                const consoleSpy = jest.spyOn(console, 'log');
+
+                megan.catch(charmander);
+
+                ash.catch(squirtle);
+
+                const testBattle = new Battle(megan, megan.belt[1].storedPokemon.name, ash, ash.belt[1].storedPokemon.name);
+                //Act
+                testBattle.fight();
+                testBattle.fight();
+                testBattle.fight();
+                testBattle.fight();
+                testBattle.fight();
+                testBattle.fight();
+                //Assert
+                expect(charmander.hasFainted()).toBe(true);
+                expect(consoleSpy).toHaveBeenCalledWith('Ash\'s Squirtle wins!');
             });
         });    
     });
