@@ -1,4 +1,5 @@
 const {
+    Move,
     Pokemon,
     FirePokemon, 
     WaterPokemon, 
@@ -41,26 +42,72 @@ describe('pokemonBattler Tests', () => {
                 //Assert
                 expect(pikachu.attackDamage).toBe(expectedOutput);
             });
-            test('should have a move property', () => {
+            test('should have a moves property', () => {
                 //Arrange
                 const name = 'Pikachu'
                 const hitPoints = 100;
                 const attackDamage = 50;
-                const move = 'thunderbolt'
-                const expectedOutput = 'thunderbolt';  
+                const move = 'Thunderbolt'
                 const pikachu = new Pokemon(name, hitPoints, attackDamage, move); 
                 //Assert
-                expect(pikachu.move).toBe(expectedOutput);
+                expect(typeof pikachu.moves).toBe('object');
             });
-            test('should have a move property, which should default to "tackle"', () => {
+            test('should have a moves property, which should default to "Tackle"', () => {
                 //Arrange
                 const name = 'Pikachu'
                 const hitPoints = 100;
                 const attackDamage = 50;
-                const expectedOutput = 'tackle';  
+                const expectedOutput = 'Tackle';  
                 const pikachu = new Pokemon(name, hitPoints, attackDamage); 
                 //Assert
-                expect(pikachu.move).toBe(expectedOutput);
+                expect(pikachu.moves[0]).toBe(expectedOutput);
+            });
+            test('should be able to have up to 4 moves', () => {
+                //Arrange
+                const name = 'Pikachu'
+                const hitPoints = 100;
+                const attackDamage = 50;
+                const pikachu = new Pokemon(name, hitPoints, attackDamage, 'Thundershock', 'Thunderbolt', 'Thunder', 'Quick Attack'); 
+                const charmander = new Charmander('Charmander', 100, 30, 'Flame Thrower', 'Fire Blast')
+                //Assert
+                expect(pikachu.moves).toEqual(['Thundershock', 'Thunderbolt', 'Thunder', 'Quick Attack']);  
+                expect(charmander.moves).toEqual(['Ember', 'Flame Thrower', 'Fire Blast', '']);    
+            }); 
+            test('the moves should be objects that have moveName, damage, and power point properties, once the pokemon is caught', () => {
+                //Arrange
+                const name = 'Pikachu'
+                const hitPoints = 100;
+                const attackDamage = 50;
+
+                const pikachu = new Pokemon(name, hitPoints, attackDamage, 'Thundershock', 'Thunderbolt', 'Thunder', 'Quick Attack'); 
+                const charmander = new Charmander('Charmander', 100, 30, 'Flamethrower', 'Fireblast')
+
+                const testTrainer = new Trainer('Test');
+
+                const thundershock = new Move('Thundershock', 25, 10);
+                const thunderbolt = new Move('Thunderbolt', 40, 5);
+                const thunder = new Move('Thunder', 60, 2);
+                const quickattack = new Move('Quick Attack', 10, 15);
+
+                const ember = new Move('Ember', 15, 10);
+                const flamethrower = new Move('Flamethrower', 35, 5);
+                const fireblast = new Move('Fireblast', 55, 2);
+                //Act
+                testTrainer.catch(pikachu);
+                testTrainer.catch(charmander);
+                //Assert
+                expect(pikachu.moves).toEqual([
+                    thundershock,
+                    thunderbolt,
+                    thunder,
+                    quickattack
+                ]);  
+                expect(charmander.moves).toEqual([
+                    ember,
+                    flamethrower,
+                    fireblast,
+                    ''
+                ]); 
             });
         });
         describe('pokemon methods', () => {
@@ -69,7 +116,7 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Pikachu'
                 const hitPoints = 100;
                 const attackDamage = 50;
-                const move = 'thunderbolt'
+                const move = 'Thunderbolt'
                 const expectedOutput = 80;  
                 const pikachu = new Pokemon(name, hitPoints, attackDamage, move); 
                 //Act
@@ -77,18 +124,21 @@ describe('pokemonBattler Tests', () => {
                 //Assert
                 expect(pikachu.hitPoints).toBe(expectedOutput);
             });
-            test('should have a useMove method that returns the Pokemon\'s attachDamage', () => {
+            test('should have a useMove method that returns the Pokemon\'s attackDamage', () => {
                 //Arrange
                 const consoleSpy = jest.spyOn(console, 'log')
                 const name = 'Pikachu'
                 const hitPoints = 100;
                 const attackDamage = 50;
-                const move = 'thunderbolt'
-                const expectedOutput = 50;  
+                const move = 'Thunderbolt'
+                const expectedOutput = 40;  
                 const pikachu = new Pokemon(name, hitPoints, attackDamage, move); 
+                const testTrainer = new Trainer('test');
+                //Act
+                testTrainer.catch(pikachu);
                 //Assert
-                expect(pikachu.useMove()).toBe(expectedOutput);
-                expect(consoleSpy).toHaveBeenCalledWith("Pikachu used thunderbolt");
+                expect(pikachu.useMove('Thunderbolt')).toBe(expectedOutput);
+                expect(consoleSpy).toHaveBeenCalledWith("Pikachu used Thunderbolt");
                 consoleSpy.mockRestore();
             });
             test('should have a hasFainted method that returns a boolen based on whether the pokeman has fainted or not', () => {
@@ -96,7 +146,7 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Pikachu'
                 const hitPoints = 100;
                 const attackDamage = 50;
-                const move = 'thunderbolt'
+                const move = 'Thunderbolt'
                 const pikachu = new Pokemon(name, hitPoints, attackDamage, move); 
                 //Assert
                 expect(pikachu.hasFainted()).toBe(false);
@@ -105,7 +155,7 @@ describe('pokemonBattler Tests', () => {
                 pikachu.takeDamage(50);
                 //Assert
                 expect(pikachu.hasFainted()).toBe(true);         
-            }); 
+            });     
         });
     });
     describe('Fire constructor', () => {
@@ -115,7 +165,7 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Charmander'
                 const hitPoints = 100;
                 const attackDamage = 40;
-                const move = 'ember'
+                const move = 'Ember'
                 const charmander = new FirePokemon(name, hitPoints, attackDamage, move); 
                 //Assert
                 expect(typeof charmander.isEffectiveAgainst()).toBe('boolean');
@@ -125,11 +175,11 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Charmander'
                 const hitPoints = 100;
                 const attackDamage = 40;
-                const move = 'ember'
+                const move = 'Ember'
                 const charmander = new FirePokemon(name, hitPoints, attackDamage, move);
-                const grassPokemon = new GrassPokemon("Bulbasaur", 90, 45, 'vine whip');
-                const waterPokemon = new WaterPokemon("Squirtle", 110, 35, 'water gun');
-                const normalPokemon = new NormalPokemon("Rattatta", 30, 5, 'scratch');
+                const grassPokemon = new GrassPokemon("Bulbasaur", 90, 45, 'Vine Whip');
+                const waterPokemon = new WaterPokemon("Squirtle", 110, 35, 'Water Gun');
+                const normalPokemon = new NormalPokemon("Rattatta", 30, 5, 'Scratch');
                 //Assert
                 expect(charmander.isEffectiveAgainst(grassPokemon)).toBe(true);
                 expect(charmander.isEffectiveAgainst(waterPokemon)).toBe(false);
@@ -140,7 +190,7 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Charmander'
                 const hitPoints = 100;
                 const attackDamage = 40;
-                const move = 'ember'
+                const move = 'Ember'
                 const charmander = new FirePokemon(name, hitPoints, attackDamage, move); 
                 //Assert
                 expect(typeof charmander.isWeakTo()).toBe('boolean');
@@ -150,11 +200,11 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Charmander'
                 const hitPoints = 100;
                 const attackDamage = 40;
-                const move = 'ember'
+                const move = 'Ember'
                 const charmander = new FirePokemon(name, hitPoints, attackDamage, move);
-                const grassPokemon = new GrassPokemon("Bulbasaur", 90, 45, 'vine whip');
-                const waterPokemon = new WaterPokemon("Squirtle", 110, 35, 'water gun');
-                const normalPokemon = new NormalPokemon("Rattatta", 30, 5, 'scratch');
+                const grassPokemon = new GrassPokemon("Bulbasaur", 90, 45, 'Vine Whip');
+                const waterPokemon = new WaterPokemon("Squirtle", 110, 35, 'Water Gun');
+                const normalPokemon = new NormalPokemon("Rattatta", 30, 5, 'Scratch');
                 //Assert
                 expect(charmander.isWeakTo(grassPokemon)).toBe(false);
                 expect(charmander.isWeakTo(waterPokemon)).toBe(true);
@@ -169,7 +219,7 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Squirtle'
                 const hitPoints = 110;
                 const attackDamage = 35;
-                const move = 'water gun'
+                const move = 'Water Gun'
                 const squirtle = new WaterPokemon(name, hitPoints, attackDamage, move); 
                 //Assert
                 expect(typeof squirtle.isEffectiveAgainst()).toBe('boolean');
@@ -179,11 +229,11 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Squirtle'
                 const hitPoints = 110;
                 const attackDamage = 35;
-                const move = 'water gun'
+                const move = 'Water Gun'
                 const squirtle = new WaterPokemon(name, hitPoints, attackDamage, move); 
-                const grassPokemon = new GrassPokemon("Bulbasaur", 90, 45, 'vine whip');
-                const firePokemon = new FirePokemon("Charmander", 100, 50, 'ember');
-                const normalPokemon = new NormalPokemon("Rattatta", 30, 5, 'scratch');
+                const grassPokemon = new GrassPokemon("Bulbasaur", 90, 45, 'Vine Whip');
+                const firePokemon = new FirePokemon("Charmander", 100, 50, 'Ember');
+                const normalPokemon = new NormalPokemon("Rattatta", 30, 5, 'Scratch');
                 //Assert
                 expect(squirtle.isEffectiveAgainst(grassPokemon)).toBe(false);
                 expect(squirtle.isEffectiveAgainst(firePokemon)).toBe(true);
@@ -194,7 +244,7 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Squirtle'
                 const hitPoints = 110;
                 const attackDamage = 35;
-                const move = 'water gun'
+                const move = 'Water Gun'
                 const squirtle = new WaterPokemon(name, hitPoints, attackDamage, move); 
                 //Assert
                 expect(typeof squirtle.isWeakTo()).toBe('boolean');
@@ -204,11 +254,11 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Squirtle'
                 const hitPoints = 110;
                 const attackDamage = 35;
-                const move = 'water gun'
+                const move = 'Water Gun'
                 const squirtle = new WaterPokemon(name, hitPoints, attackDamage, move); 
-                const grassPokemon = new GrassPokemon("Bulbasaur", 90, 45, 'vine whip');
-                const firePokemon = new FirePokemon("Charmander", 100, 50, 'ember');
-                const normalPokemon = new NormalPokemon("Rattatta", 30, 5, 'scratch');
+                const grassPokemon = new GrassPokemon("Bulbasaur", 90, 45, 'Vine Whip');
+                const firePokemon = new FirePokemon("Charmander", 100, 50, 'Ember');
+                const normalPokemon = new NormalPokemon("Rattatta", 30, 5, 'Scratch');
                 //Assert
                 expect(squirtle.isWeakTo(grassPokemon)).toBe(true);
                 expect(squirtle.isWeakTo(firePokemon)).toBe(false);
@@ -223,7 +273,7 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Bulbasaur'
                 const hitPoints = 90;
                 const attackDamage = 45;
-                const move = 'vine whip'
+                const move = 'Vine Whip'
                 const bulbasaur = new GrassPokemon(name, hitPoints, attackDamage, move); 
                 //Assert
                 expect(typeof bulbasaur.isEffectiveAgainst()).toBe('boolean');
@@ -233,11 +283,11 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Bulbasaur'
                 const hitPoints = 90;
                 const attackDamage = 45;
-                const move = 'vine whip'
+                const move = 'Vine Whip'
                 const bulbasaur = new GrassPokemon(name, hitPoints, attackDamage, move); 
-                const firePokemon = new FirePokemon("Charmander", 100, 50, 'ember');
-                const waterPokemon = new WaterPokemon("Squirtle", 110, 35, 'water gun');
-                const normalPokemon = new NormalPokemon("Rattatta", 30, 5, 'scratch');
+                const firePokemon = new FirePokemon("Charmander", 100, 50, 'Ember');
+                const waterPokemon = new WaterPokemon("Squirtle", 110, 35, 'Water Gun');
+                const normalPokemon = new NormalPokemon("Rattatta", 30, 5, 'Scratch');
                 //Assert
                 expect(bulbasaur.isEffectiveAgainst(firePokemon)).toBe(false);
                 expect(bulbasaur.isEffectiveAgainst(waterPokemon)).toBe(true);
@@ -248,7 +298,7 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Bulbasaur'
                 const hitPoints = 90;
                 const attackDamage = 45;
-                const move = 'vine whip'
+                const move = 'Vine Whip'
                 const bulbasaur = new GrassPokemon(name, hitPoints, attackDamage, move); 
                 //Assert
                 expect(typeof bulbasaur.isWeakTo()).toBe('boolean');
@@ -258,11 +308,11 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Bulbasaur'
                 const hitPoints = 90;
                 const attackDamage = 45;
-                const move = 'vine whip'
+                const move = 'Vine Whip'
                 const bulbasaur = new GrassPokemon(name, hitPoints, attackDamage, move); 
-                const firePokemon = new FirePokemon("Charmander", 100, 50, 'ember');
-                const waterPokemon = new WaterPokemon("Squirtle", 110, 35, 'water gun');
-                const normalPokemon = new NormalPokemon("Rattatta", 30, 5, 'scratch');
+                const firePokemon = new FirePokemon("Charmander", 100, 50, 'Ember');
+                const waterPokemon = new WaterPokemon("Squirtle", 110, 35, 'Water Gun');
+                const normalPokemon = new NormalPokemon("Rattatta", 30, 5, 'Scratch');
                 //Assert
                 expect(bulbasaur.isWeakTo(firePokemon)).toBe(true);
                 expect(bulbasaur.isWeakTo(waterPokemon)).toBe(false);
@@ -277,7 +327,7 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Rattatta'
                 const hitPoints = 30;
                 const attackDamage = 10;
-                const move = 'scratch'
+                const move = 'Scratch'
                 const rattatta = new NormalPokemon(name, hitPoints, attackDamage, move); 
                 //Assert
                 expect(typeof rattatta.isEffectiveAgainst()).toBe('boolean');
@@ -287,11 +337,11 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Rattatta'
                 const hitPoints = 30;
                 const attackDamage = 10;
-                const move = 'scratch'
+                const move = 'Scratch'
                 const rattatta = new NormalPokemon(name, hitPoints, attackDamage, move); 
-                const grassPokemon = new GrassPokemon("Bulbasaur", 90, 45, 'vine whip');
-                const waterPokemon = new WaterPokemon("Squirtle", 110, 35, 'water gun');
-                const firePokemon = new FirePokemon("Charmander", 100, 50, 'ember');
+                const grassPokemon = new GrassPokemon("Bulbasaur", 90, 45, 'Vine Whip');
+                const waterPokemon = new WaterPokemon("Squirtle", 110, 35, 'Water Gun');
+                const firePokemon = new FirePokemon("Charmander", 100, 50, 'Ember');
                 //Assert
                 expect(rattatta.isEffectiveAgainst(grassPokemon)).toBe(false);
                 expect(rattatta.isEffectiveAgainst(waterPokemon)).toBe(false);
@@ -302,7 +352,7 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Rattatta'
                 const hitPoints = 30;
                 const attackDamage = 10;
-                const move = 'scratch'
+                const move = 'Scratch'
                 const rattatta = new NormalPokemon(name, hitPoints, attackDamage, move); 
                 //Assert
                 expect(typeof rattatta.isWeakTo()).toBe('boolean');
@@ -312,11 +362,11 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Rattatta'
                 const hitPoints = 30;
                 const attackDamage = 10;
-                const move = 'scratch'
+                const move = 'Scratch'
                 const rattatta = new NormalPokemon(name, hitPoints, attackDamage, move); 
-                const grassPokemon = new GrassPokemon("Bulbasaur", 90, 45, 'vine whip');
-                const waterPokemon = new WaterPokemon("Squirtle", 110, 35, 'water gun');
-                const firePokemon = new FirePokemon("Charmander", 100, 50, 'ember');
+                const grassPokemon = new GrassPokemon("Bulbasaur", 90, 45, 'Vine Whip');
+                const waterPokemon = new WaterPokemon("Squirtle", 110, 35, 'Water Gun');
+                const firePokemon = new FirePokemon("Charmander", 100, 50, 'Ember');
                 //Assert
                 expect(rattatta.isWeakTo(grassPokemon)).toBe(false);
                 expect(rattatta.isWeakTo(waterPokemon)).toBe(false);
@@ -335,14 +385,14 @@ describe('pokemonBattler Tests', () => {
                 //Assert
                 expect(charmander instanceof FirePokemon).toBe(true);
             });
-            test('should have it move to be ember', () => {
+            test('should have it move to be Ember', () => {
                 //Arrange
                 const name = 'Charmander'
                 const hitPoints = 100;
                 const attackDamage = 40;
                 const charmander = new Charmander(name, hitPoints, attackDamage); 
                 //Assert
-                expect(charmander.move).toBe("ember");
+                expect(charmander.moves[0]).toBe("Ember");
             });
         });
         describe('Squirtle constructor Properties', () => {
@@ -355,14 +405,14 @@ describe('pokemonBattler Tests', () => {
                 //Assert
                 expect(squirtle instanceof WaterPokemon).toBe(true);
                 });
-            test('should have it move set to water gun ', () => {
+            test('should have it move set to Bubble', () => {
                 //Arrange
                 const name = 'Squirtle'
                 const hitPoints = 100;
                 const attackDamage = 40;
                 const squirtle = new Squirtle(name, hitPoints, attackDamage); 
                 //Assert
-                expect(squirtle.move).toBe("water gun");
+                expect(squirtle.moves[0]).toBe("Bubble");
             });
         });
         describe('Bulbasaur constructor Properties', () => {
@@ -375,14 +425,14 @@ describe('pokemonBattler Tests', () => {
                 //Assert
                 expect(bulbasaur instanceof GrassPokemon).toBe(true);
             });
-            test('should have it move set to vine whip ', () => {
+            test('should have it move set to Vine Whip ', () => {
                 //Arrange
                 const name = 'Bulbasaur'
                 const hitPoints = 100;
                 const attackDamage = 40;
                 const bulbasaur = new Bulbasaur(name, hitPoints, attackDamage); 
                 //Assert
-                expect(bulbasaur.move).toBe("vine whip");
+                expect(bulbasaur.moves[0]).toBe("Vine Whip");
             });
         });
         describe('Rattatta constructor Properties', () => {
@@ -411,7 +461,7 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Pikachu'
                 const hitPoints = 100;
                 const attackDamage = 50;
-                const move = 'thunderbolt'
+                const move = 'Thunderbolt'
                 const pikachu = new Pokemon(name, hitPoints, attackDamage, move); 
                 const myPokeball = new Pokeball;
                 //Assert
@@ -428,7 +478,7 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Pikachu'
                 const hitPoints = 100;
                 const attackDamage = 50;
-                const move = 'thunderbolt'
+                const move = 'Thunderbolt'
                 const pikachu = new Pokemon(name, hitPoints, attackDamage, move); 
                 const myPokeball = new Pokeball;
                 //Assert
@@ -443,7 +493,7 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Pikachu'
                 const hitPoints = 100;
                 const attackDamage = 50;
-                const move = 'thunderbolt'
+                const move = 'Thunderbolt'
                 const pikachu = new Pokemon(name, hitPoints, attackDamage, move); 
                 const myPokeball = new Pokeball;
                 //Assert
@@ -458,7 +508,7 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Pikachu'
                 const hitPoints = 100;
                 const attackDamage = 50;
-                const move = 'thunderbolt'
+                const move = 'Thunderbolt'
                 const pikachu = new Pokemon(name, hitPoints, attackDamage, move); 
                 const myPokeball = new Pokeball;
                 //Act
@@ -471,7 +521,7 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Pikachu'
                 const hitPoints = 100;
                 const attackDamage = 50;
-                const move = 'thunderbolt'
+                const move = 'Thunderbolt'
                 const pikachu = new Pokemon(name, hitPoints, attackDamage, move); 
                 const charmander = new Charmander('Charmander', 100, 40);  
                 const myPokeball = new Pokeball;
@@ -489,7 +539,7 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Pikachu'
                 const hitPoints = 100;
                 const attackDamage = 50;
-                const move = 'thunderbolt'
+                const move = 'Thunderbolt'
                 const pikachu = new Pokemon(name, hitPoints, attackDamage, move); 
                 const myPokeball = new Pokeball;
                 const mySecondPokeball = new Pokeball;
@@ -510,7 +560,7 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Pikachu'
                 const hitPoints = 100;
                 const attackDamage = 50;
-                const move = 'thunderbolt'
+                const move = 'Thunderbolt'
                 const pikachu = new Pokemon(name, hitPoints, attackDamage, move); 
                 const myPokeball = new Pokeball;
                 myPokeball.throw(pikachu);
@@ -523,7 +573,7 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Pikachu'
                 const hitPoints = 100;
                 const attackDamage = 50;
-                const move = 'thunderbolt'
+                const move = 'Thunderbolt'
                 const pikachu = new Pokemon(name, hitPoints, attackDamage, move); 
                 const myPokeball = new Pokeball;
                 myPokeball.throw(pikachu);
@@ -582,7 +632,7 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Pikachu'
                 const hitPoints = 100;
                 const attackDamage = 50;
-                const move = 'thunderbolt'
+                const move = 'Thunderbolt'
                 const pikachu = new Pokemon(name, hitPoints, attackDamage, move); 
                 //Assert
                 expect(megan.catch).toThrow(new Error("catch needs a pokemon as an argument"))
@@ -593,7 +643,7 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Pikachu'
                 const hitPoints = 100;
                 const attackDamage = 50;
-                const move = 'thunderbolt'
+                const move = 'Thunderbolt'
                 const pikachu1 = new Pokemon(name, hitPoints, attackDamage, move); 
                 const pikachu2 = new Pokemon(name, 90, attackDamage, move);
                 //Act
@@ -611,7 +661,7 @@ describe('pokemonBattler Tests', () => {
                 const name = 'Pikachu'
                 const hitPoints = 100;
                 const attackDamage = 50;
-                const move = 'thunderbolt'
+                const move = 'Thunderbolt'
                 const pikachu1 = new Pokemon(name, hitPoints, attackDamage, move); 
                 const pikachu2 = new Pokemon(name, 90, attackDamage, move);
                 const pikachu3 = new Pokemon(name, 80, attackDamage, move);
@@ -637,12 +687,12 @@ describe('pokemonBattler Tests', () => {
                 const megan = new Trainer("megan")
                 const hitPoints = 100;
                 const attackDamage = 50;
-                const move = 'thunderbolt'
+                const move = 'Thunderbolt'
                 const pikachu = new Pokemon("Pikachu", hitPoints, attackDamage, move); 
                 const charmander = new Charmander("Charmander", 90, attackDamage);
                 const squirtle = new Squirtle("Squirtle", 80, attackDamage);
                 const bulbasaur = new Bulbasaur("Bulbasaur", 70, attackDamage);
-                const rattatta = new Rattatta("Rattatta", 60, attackDamage, "scratch");
+                const rattatta = new Rattatta("Rattatta", 60, attackDamage, "Scratch");
                 const pidgey = new Pokemon("Pidgey", 50, attackDamage);
                 megan.catch(pikachu)
                 megan.catch(charmander)
@@ -659,12 +709,12 @@ describe('pokemonBattler Tests', () => {
                 const megan = new Trainer("megan")
                 const hitPoints = 100;
                 const attackDamage = 50;
-                const move = 'thunderbolt'
+                const move = 'Thunderbolt'
                 const pikachu = new Pokemon("Pikachu", hitPoints, attackDamage, move); 
                 const charmander = new Charmander("Charmander", 90, attackDamage);
                 const squirtle = new Squirtle("Squirtle", 80, attackDamage);
                 const bulbasaur = new Bulbasaur("Bulbasaur", 70, attackDamage);
-                const rattatta = new Rattatta("Rattatta", 60, attackDamage, "scratch");
+                const rattatta = new Rattatta("Rattatta", 60, attackDamage, "Scratch");
                 const pidgey = new Pokemon("Pidgey", 50, attackDamage);
                 const consoleSpy = jest.spyOn(console, 'log');
                 megan.catch(pikachu)
@@ -682,20 +732,65 @@ describe('pokemonBattler Tests', () => {
         });
     });
     describe('Battle constructor', () => {
-        test('should take two trainers, and their chosen pokemon for the battle, as arguments, and store them as properties', () => {  
+        test('should take two trainers, and store them as properties', () => {  
             //Arrange
-            const megan = new Trainer("megan");
+            const megan = new Trainer("Megan");
             const ash = new Trainer("Ash");
-            const charmander = new Charmander('Charmander', 110, 30); 
-            const squirtle = new Squirtle('Squirtle', 90, 25);
+            const charmander = new Charmander('Charmander', 90, 35); 
+            const squirtle = new Squirtle('Squirtle', 100, 25);
+            const pikachu = new Pokemon("Pikachu", 75, 40, 'Thunderbolt'); 
+            const bulbasaur = new Bulbasaur("Bulbasaur", 110, 30);
+            const rattatta = new Rattatta("Rattatta", 60, 15, "Scratch");
+            const pidgey = new Pokemon("Pidgey", 80, 25);
+
             megan.catch(charmander);
+            megan.catch(bulbasaur);
+            megan.catch(rattatta);
+
             ash.catch(squirtle);
+            ash.catch(pikachu);
+            ash.catch(pidgey);
+
             const testBattle = new Battle(megan, megan.belt[1].storedPokemon.name, ash, ash.belt[1].storedPokemon.name)
             //Assert
             expect(testBattle.trainerOne).toEqual(megan);
             expect(testBattle.trainerTwo).toEqual(ash);
-            expect(testBattle.trainerOnePokemon).toEqual(charmander.name);
-            expect(testBattle.trainerTwoPokemon).toEqual(squirtle.name);
+            expect(testBattle.trainerOneFirstPokemon).toBe('Charmander');
+            expect(testBattle.trainerTwoFirstPokemon).toBe('Squirtle');
+        });
+        test('should be able to change pokemon mid battle, with any pokemon currently in the trainer\'s belt. This will end that trainers turn', () => {  
+            //Arrange
+            const megan = new Trainer("Megan");
+            const ash = new Trainer("Ash");
+            const charmander = new Charmander('Charmander', 90, 35); 
+            const squirtle = new Squirtle('Squirtle', 100, 25);
+            const pikachu = new Pokemon("Pikachu", 75, 40, 'Thunderbolt'); 
+            const bulbasaur = new Bulbasaur("Bulbasaur", 110, 30);
+            const rattatta = new Rattatta("Rattatta", 60, 15, "Scratch");
+            const pidgey = new Pokemon("Pidgey", 80, 25);
+
+            megan.catch(charmander);
+            megan.catch(bulbasaur);
+            megan.catch(rattatta);
+
+            ash.catch(squirtle);
+            ash.catch(pikachu);
+            ash.catch(pidgey);
+
+            const testBattle = new Battle(megan, megan.belt[1].storedPokemon.name, ash, ash.belt[1].storedPokemon.name)
+            //Assert
+            expect(testBattle.trainerOnePokemon).toBe('Charmander');
+            //Act
+            if(testBattle.turnOfPokemon === 'Charmander') {
+                testBattle.changePokemon('Bulbasaur')
+                expect(testBattle.trainerOnePokemon).toBe('Bulbasaur');
+                expect(testBattle.turnOfPokemon).not.toBe('Bulbasaur');
+            } else {
+                testBattle.changePokemon('Pikachu');
+                expect(testBattle.trainerTwoPokemon).toBe('Pikachu');
+                expect(testBattle.turnOfPokemon).not.toBe('Pikachu');
+            }
+            //Assert
         });
         describe('Fight Method', () => {
             test('should have a Fight method that uses a random pokemon for the first turn, then switches pokemon each time it is called', () => {  
@@ -721,7 +816,7 @@ describe('pokemonBattler Tests', () => {
                 //Arrange
                 const megan = new Trainer("Megan");
                 const ash = new Trainer("Ash");
-                const charmander = new Charmander('Charmander', 80, 30); 
+                const charmander = new Charmander('Charmander', 100, 30); 
                 const squirtle = new Squirtle('Squirtle', 90, 25);
 
                 megan.catch(charmander);
@@ -734,15 +829,15 @@ describe('pokemonBattler Tests', () => {
                 testBattle.fight();
                 testBattle.fight();
                 //Assert
-                expect(consoleSpy).toHaveBeenCalledWith('Megan\'s Charmander used ember on Ash\'s Squirtle! It was not very effective!');
-                expect(consoleSpy).toHaveBeenCalledWith('Ash\'s Squirtle used water gun on Megan\'s Charmander! It was super effective!');
+                expect(consoleSpy).toHaveBeenCalledWith('Megan\'s Charmander used Ember on Ash\'s Squirtle! It was not very effective!');
+                expect(consoleSpy).toHaveBeenCalledWith('Ash\'s Squirtle used Bubble on Megan\'s Charmander! It was super effective!');
                 consoleSpy.mockRestore();
             });
             test('when called, the pokemon who\'s turn it is should attack the defending pokemon, reducing their hitPoints by the amount of their attack damage, taking into account their strengths and weaknessess', () => {  
                 //Arrange
                 const megan = new Trainer("Megan");
                 const ash = new Trainer("Ash");
-                const charmander = new Charmander('Charmander', 80, 30); 
+                const charmander = new Charmander('Charmander', 100, 30); 
                 const squirtle = new Squirtle('Squirtle', 90, 25);
 
                 megan.catch(charmander);
@@ -754,14 +849,18 @@ describe('pokemonBattler Tests', () => {
                 testBattle.fight();
                 testBattle.fight();
                 //Assert
-                expect(charmander.hitPoints).toBe(49);
-                expect(squirtle.hitPoints).toBe(68);
+                try {
+                    expect(charmander.hitPoints).toBe(81);
+                }
+                catch {
+                    expect(charmander.hitPoints).toBe(44);
+                }
             });
-            test('If the defending pokemon faints, the attacker wins', () => {  
+            test('If a pokemons hitPoints are reduced to zero, they faint', () => {  
                 //Arrange
                 const megan = new Trainer("Megan");
                 const ash = new Trainer("Ash");
-                const charmander = new Charmander('Charmander', 80, 30); 
+                const charmander = new Charmander('Charmander', 60, 30); 
                 const squirtle = new Squirtle('Squirtle', 90, 25);
                 const consoleSpy = jest.spyOn(console, 'log');
 
@@ -779,7 +878,57 @@ describe('pokemonBattler Tests', () => {
                 testBattle.fight();
                 //Assert
                 expect(charmander.hasFainted()).toBe(true);
-                expect(consoleSpy).toHaveBeenCalledWith('Ash\'s Squirtle wins!');
+            });
+            test('Should have a "critical hit" that randomly awards triple damage to the attacking pokemon', () => {  
+                //Arrange
+                const megan = new Trainer("Megan");
+                const ash = new Trainer("Ash");
+                const charmander = new Charmander('Charmander', 80, 30); 
+                const squirtle = new Squirtle('Squirtle', 90, 25);
+                const consoleSpy = jest.spyOn(console, 'log');
+
+                megan.catch(charmander);
+
+                ash.catch(squirtle);
+
+                const testBattle = new Battle(megan, megan.belt[1].storedPokemon.name, ash, ash.belt[1].storedPokemon.name);
+                //Act
+                testBattle.fight();
+                testBattle.fight();
+                testBattle.fight();
+                testBattle.fight();
+                testBattle.fight();
+                testBattle.fight();
+                //Assert
+                expect(consoleSpy).toHaveBeenCalledWith('Critical hit!');
+            });
+            test('When a pokemon faints, the next available pokemon should be automatically selected', () => {  
+                //Arrange
+                const megan = new Trainer("Megan");
+                const ash = new Trainer("Ash");
+                const charmander = new Charmander('Charmander', 10, 35); 
+                const squirtle = new Squirtle('Squirtle', 110, 25);
+                const pikachu = new Pokemon("Pikachu", 75, 40, 'Thunderbolt'); 
+                const bulbasaur = new Bulbasaur("Bulbasaur", 100, 30);
+                const rattatta = new Rattatta("Rattatta", 60, 15, "Scratch");
+                const pidgey = new Pokemon("Pidgey", 80, 25);
+
+                megan.catch(charmander);
+                megan.catch(bulbasaur);
+                megan.catch(rattatta);
+
+                ash.catch(squirtle);
+                ash.catch(pikachu);
+                ash.catch(pidgey);
+
+                const testBattle = new Battle(megan, megan.belt[1].storedPokemon.name, ash, ash.belt[1].storedPokemon.name);
+                //Act
+                testBattle.fight();
+                testBattle.fight();
+                testBattle.fight();
+                testBattle.fight();
+                //Assert
+                expect(testBattle.trainerOnePokemon).not.toBe('Charmander');
             });
         });    
     });
