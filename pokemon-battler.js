@@ -76,57 +76,6 @@ class Move {
     };
 };
 
-//Normal Moves
-const tackle = new Move('Tackle', 15, 10);
-const scratch = new Move('Scratch', 15, 10);
-const quickattack = new Move('Quick Attack', 10, 15);
-const bite = new Move('Bite', 30, 5);
-const headbutt = new Move('Headbutt', 40, 2);
-const gust = new Move('Gust', 25, 10);
-const wingattack = new Move('Wing Attack', 40, 5);
-//Water Moves
-const watergun = new Move('Water Gun', 25, 5);
-const bubble = new Move('Bubble', 15, 10);
-const hydropump = new Move('Hydro Pump', 45, 2);
-//Fire Moves
-const ember = new Move('Ember', 15, 10);
-const flamethrower = new Move('Flamethrower', 35, 5);
-const fireblast = new Move('Fireblast', 55, 2);
-//Grass Moves
-const vinewhip = new Move('Vine Whip', 15, 10);
-const razorleaf = new Move('Razor Leaf', 30, 5);
-const sunbeam = new Move('Sun Beam', 50, 2);
-//Electric Moves
-const thunderbolt = new Move('Thunderbolt', 40, 5);
-const thundershock = new Move('Thundershock', 25, 10);
-const thunder = new Move('Thunder', 60, 2);
-//Struggle
-const struggle = new Move('Struggle' )
-
-const allMoves = [
-    tackle,
-    scratch,
-    quickattack,
-    bite,
-    headbutt,
-    gust,
-    wingattack,
-    watergun,
-    bubble,
-    hydropump,
-    ember,
-    flamethrower,
-    fireblast,
-    vinewhip,
-    razorleaf,
-    sunbeam,
-    thunderbolt,
-    thundershock,
-    thunder,
-    struggle
-]
-
-
 class Pokemon {
     constructor(name, hitPoints, attackDamage, move1 = 'Tackle', move2 = '', move3 = '', move4 = '') {
         this.name = name;
@@ -138,17 +87,68 @@ class Pokemon {
             move3,
             move4
         ];
+        this.allMoves = [];
     };
-    
+
+    defineMoves() {
+        //Normal Moves
+        const tackle = new Move('Tackle', 15, 10)
+        const scratch = new Move('Scratch', 15, 10)
+        const quickattack = new Move('Quick Attack', 10, 15)
+        const bite = new Move('Bite', 30, 5)
+        const headbutt = new Move('Headbutt', 40, 2)
+        const gust = new Move('Gust', 25, 10)
+        const wingattack = new Move('Wing Attack', 40, 5)
+        //Water Moves
+        const watergun = new Move('Water Gun', 25, 5)
+        const bubble = new Move('Bubble', 15, 10)
+        const hydropump = new Move('Hydro Pump', 45, 2)
+        //Fire Moves
+        const ember = new Move('Ember', 15, 10)
+        const flamethrower = new Move('Flamethrower', 35, 5)
+        const fireblast = new Move('Fireblast', 55, 2)
+        //Grass Moves
+        const vinewhip = new Move('Vine Whip', 15, 10)
+        const razorleaf = new Move('Razor Leaf', 30, 5)
+        const sunbeam = new Move('Sun Beam', 50, 2)
+        //Electric Moves
+        const thunderbolt = new Move('Thunderbolt', 40, 5)
+        const thundershock = new Move('Thundershock', 25, 10)
+        const thunder = new Move('Thunder', 60, 2)
+
+        const allMoves = [
+            tackle,
+            scratch,
+            quickattack,
+            bite,
+            headbutt,
+            gust,
+            wingattack,
+            watergun,
+            bubble,
+            hydropump,
+            ember,
+            flamethrower,
+            fireblast,
+            vinewhip,
+            razorleaf,
+            sunbeam,
+            thunderbolt,
+            thundershock,
+            thunder,
+        ];
+        return this.allMoves = allMoves;
+    };
+
     takeDamage(damage) {
         return this.hitPoints -= damage
-    }
-    
+    };
+
     assignMoves() {
         for (let a = 0; a < this.moves.length; a++) {
-            for (let b = 0; b < allMoves.length; b++) {
-                if (this.moves[a] === allMoves[b].moveName) {
-                    this.moves[a] = allMoves[b];
+            for (let b = 0; b < this.allMoves.length; b++) {
+                if (this.moves[a] === this.allMoves[b].moveName) {
+                    this.moves[a] = this.allMoves[b];
                 };
             };
         };
@@ -280,6 +280,7 @@ class Pokeball {
             return console.log(`You can't catch this ${pokemon.name}, you already have a ${this.#storage.name} in your pokeball!`);
         };
         console.log(`you caught ${pokemon.name}!`);
+        pokemon.defineMoves();
         pokemon.assignMoves();
         return this.#storage = pokemon;    
     };
@@ -450,20 +451,13 @@ class Battle {
                     };
                 };
                 return console.log(`${chosenMove} has no power points left, you can\'t use it! Pick another.`);
-            }
-        }
+            };
+        };
 
-        // attackingPokemon.moves.map((move, index, movesArray) => {
-        //     if (move.moveName === chosenMove && move.pp < 1) {
-        //         movesArray.map((move) => {
-        //             if (move.pp > 1) {
-        //                 return console.log(`${chosenMove} has no power points left, you can\'t use it! Pick another.`);
-        //             };
-        //         });
-        //         };
-        //         chosenMove = 'Struggle';
-        //         return console.log('Oh No! You are out of moves!')
-        //     });
+        if (chosenMove === 'Struggle') {
+            attackingPokemon.hitPoints -= attackingPokemon.attackDamage;
+            return console.log(`${attackingPokemon.name} used Struggle, and hurt itself!`)
+        }
 
         let damage = attackingPokemon.useMove(chosenMove);
         let effectivenessMessage = '';
